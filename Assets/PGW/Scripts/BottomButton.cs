@@ -1,22 +1,19 @@
 using UnityEngine;
+using System;
 
 public class BottomButton : MonoBehaviour
 {
-    public GameObject targetObject; // 호출할 대상 오브젝트
-    public string methodName = "Activate"; // 호출할 메소드 이름
-    public float invokeInterval = 0.5f; // 메소드 호출 간격 (초 단위)
+    public Action<bool> onPressedStateChanged; // 눌림 상태가 변경될 때 호출되는 액션
 
     private Vector3 originalPosition; // 버튼의 원래 위치
     private Vector3 pressedPosition; // 눌린 위치 (Y축으로 -0.1)
     private bool isPressed = false; // 버튼이 눌렸는지 상태
-    private float lastInvokeTime; // 마지막 호출 시간
     public float moveSpeed = 5f; // 버튼이 내려가는 속도
 
     void Start()
     {
         originalPosition = transform.position;
         pressedPosition = originalPosition + new Vector3(0, -0.1f, 0); // Y축으로 -0.1 이동
-        lastInvokeTime = -invokeInterval; // 초기 호출 가능 상태로 설정
     }
 
     void Update()
@@ -30,20 +27,18 @@ public class BottomButton : MonoBehaviour
         {
             transform.position = Vector3.Lerp(transform.position, originalPosition, Time.deltaTime * moveSpeed);
         }
-
-        // 버튼이 눌린 상태에서 주기적으로 메소드 호출
-        if (isPressed && Time.time - lastInvokeTime >= invokeInterval)
-        {
-            InvokeMethod();
-            lastInvokeTime = Time.time; // 마지막 호출 시간 갱신
-        }
     }
 
     private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            isPressed = true; // 플레이어가 위에 있는 동안 눌림 상태 유지
+            if (!isPressed) // 상태가 변경될 때만 호출
+            {
+                isPressed = true;
+                onPressedStateChanged?.Invoke(true); // 눌림 상태를 true로 전달
+                Debug.Log("BottomButton이 눌렸습니다.");
+            }
         }
     }
 
@@ -51,20 +46,12 @@ public class BottomButton : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            isPressed = false; // 플레이어가 떠나면 눌림 해제
-        }
-    }
-
-    private void InvokeMethod()
-    {
-        if (targetObject != null)
-        {
-            targetObject.SendMessage(methodName, SendMessageOptions.DontRequireReceiver);
-            Debug.Log($"{methodName} 메소드가 호출되었습니다!");
-        }
-        else
-        {
-            Debug.LogWarning("타겟 오브젝트가 설정되지 않았습니다.");
+            if (isPressed) // 상태가 변경될 때만 호출
+            {
+                isPressed = false;
+                onPressedStateChanged?.Invoke(false); // 눌림 상태를 false로 전달
+                Debug.Log("BottomButton이 해제되었습니다.");
+            }
         }
     }
 

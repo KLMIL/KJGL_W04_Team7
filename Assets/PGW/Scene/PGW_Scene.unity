@@ -237,11 +237,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 47624323}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 096d6f866d43f1345a4b06d6d1c971bd, type: 3}
+  m_Script: {fileID: 11500000, guid: 2db0358066860544785ccbf4f644ecc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttons:
-  - {fileID: 1038861706}
+  stayDuration: 3
 --- !u!1 &125921378
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,13 +815,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1038861701}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab036081d92cdcc48b8e95bac224d0c9, type: 3}
+  m_Script: {fileID: 11500000, guid: b6b00cbf15843a7469b22173314e35e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetObject: {fileID: 47624323}
   methodName: Activate
-  invokeInterval: 0.5
-  moveSpeed: 5
+  activationRange: 2
 --- !u!1 &1193410765
 GameObject:
   m_ObjectHideFlags: 0
