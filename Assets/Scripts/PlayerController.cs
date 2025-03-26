@@ -32,6 +32,8 @@ public class PlayerController : MonoBehaviour
 
     public Image targetDot;
 
+    [SerializeField] private bool isInteracting; // 상호작용 중인지 추적
+
     #region LifeCycle
     void Awake()
     {
@@ -67,7 +69,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (this == activePlayer)
+        if (this == activePlayer && !isInteracting) // 상호작용 중이 아니면 이동
         {
             Move();
             UpdateAnimation();
@@ -76,11 +78,16 @@ public class PlayerController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (this == activePlayer)
+        if (this == activePlayer && !isInteracting) // 상호작용 중이 아니면 카메라 회전
         {
             Look();
             UpdateAnimation();
-            UpdateTargetDot(); // 하얀 점 업데이트
+            UpdateTargetDot();
+        }
+        else if (this == activePlayer)
+        {
+            UpdateAnimation(); // 상호작용 중에도 애니메이션은 업데이트
+            UpdateTargetDot(); // 하얀 점도 유지
         }
     }
 
@@ -164,7 +171,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleJump()
     {
-        if (this == activePlayer && Mathf.Abs(rb.linearVelocity.y) < 0.01f)
+        if (this == activePlayer && !isInteracting && Mathf.Abs(rb.linearVelocity.y) < 0.01f) // 상호작용 중 점프 불가
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             bodyAnimator.SetTrigger("Jump");
@@ -177,39 +184,42 @@ public class PlayerController : MonoBehaviour
     {
         if (this != activePlayer) return;
 
+        isInteracting = true; // 상호작용 시작
+
         if (heldItem != null)
         {
             DropItem();
+            Invoke(nameof(ResetInteracting), 0.5f); // 애니메이션 시간 후 해제
+            return;
+        }
+
+        Ray ray = firstPersonCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, interactRange))
+        {
+            if (hit.collider.CompareTag("Pickup"))
+            {
+                PickUpItem(hit.collider.gameObject);
+            }
+            else if (hit.collider.CompareTag("HorizontalButton"))
+            {
+                bodyAnimator.SetTrigger("Press");
+                chestAnimator.SetTrigger("Press");
+                Debug.Log("Pressed HorizontalButton!");
+            }
+            else if (hit.collider.CompareTag("VerticalButton"))
+            {
+                bodyAnimator.SetTrigger("Punch");
+                chestAnimator.SetTrigger("Punch");
+                Debug.Log("Punched VerticalButton!");
+            }
+            Invoke(nameof(ResetInteracting), 0.5f); // 애니메이션 시간 후 해제
         }
         else
         {
-            Ray ray = firstPersonCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, interactRange))
-            {
-                if (hit.collider.CompareTag("Pickup"))
-                {
-
-                    PickUpItem(hit.collider.gameObject);
-                }
-                else if (hit.collider.CompareTag("HorizontalButton"))
-                {
-                    // 손가락으로 누르기
-                    bodyAnimator.SetTrigger("Press");
-                    chestAnimator.SetTrigger("Press");
-                    Debug.Log("Pressed HorizontalButton!");
-                }
-                else if (hit.collider.CompareTag("VerticalButton"))
-                {
-                    // 주먹으로 치기
-                    bodyAnimator.SetTrigger("Punch");
-                    chestAnimator.SetTrigger("Punch");
-                    Debug.Log("Punched VerticalButton!");
-                }
-            }
+            isInteracting = false; // 상호작용 대상이 없으면 바로 해제
         }
-
     }
 
     private void PickUpItem(GameObject item)
@@ -225,7 +235,7 @@ public class PlayerController : MonoBehaviour
         heldItem.transform.localPosition = Vector3.zero;
         heldItem.transform.localRotation = Quaternion.identity;
 
-        bodyAnimator.SetTrigger("PickUp"); // 새로운 PickUp 트리거
+        bodyAnimator.SetTrigger("PickUp");
         chestAnimator.SetTrigger("PickUp");
         Debug.Log("Picked up: " + item.name);
     }
@@ -243,10 +253,15 @@ public class PlayerController : MonoBehaviour
 
             heldItem = null;
 
-            bodyAnimator.SetTrigger("Drop"); // 새로운 Drop 트리거
+            bodyAnimator.SetTrigger("Drop");
             chestAnimator.SetTrigger("Drop");
             Debug.Log("Dropped item");
         }
+    }
+
+    private void ResetInteracting()
+    {
+        isInteracting = false; // 상호작용 종료
     }
 
     private void UpdateTargetDot()
