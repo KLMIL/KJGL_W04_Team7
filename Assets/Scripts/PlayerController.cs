@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,9 +23,14 @@ public class PlayerController : MonoBehaviour
 
     public static PlayerController activePlayer;
 
-    // 죽는 모션 테스트
     [SerializeField] private bool tmp_die;
     public Renderer chestRenderer;
+
+    private float interactRange = 3f;
+    private GameObject heldItem;
+    public Transform handTransform;
+
+    public Image targetDot;
 
     #region LifeCycle
     void Awake()
@@ -33,6 +39,9 @@ public class PlayerController : MonoBehaviour
         if (bodyAnimator == null) Debug.LogError("bodyAnimator가 연결되지 않았습니다!");
         if (chestAnimator == null) Debug.LogError("chestAnimator가 연결되지 않았습니다!");
         if (firstPersonCamera == null) Debug.LogError("카메라가 연결되지 않았습니다!");
+        if (chestRenderer == null) Debug.LogError("chestRenderer가 연결되지 않았습니다!");
+        if (handTransform == null) Debug.LogError("handTransform이 연결되지 않았습니다!");
+        if (targetDot == null) Debug.LogError("targetDot이 연결되지 않았습니다!");
         inputActions = new InputActions();
 
         activePlayer = this;
@@ -47,10 +56,8 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Look.canceled += ctx => lookInput = Vector2.zero;
 
-        // 임시 죽는기능 테스트용 코드. OnDestroy 작성 안함
         inputActions.Player.TEMP_Die.performed += ctx => tmp_die = true;
         inputActions.Player.TEMP_Die.canceled += ctx => tmp_die = false;
-
 
         //Cursor.lockState = CursorLockMode.Locked;
     }
@@ -73,6 +80,7 @@ public class PlayerController : MonoBehaviour
         {
             Look();
             UpdateAnimation();
+            UpdateTargetDot(); // 하얀 점 업데이트
         }
     }
 
@@ -80,13 +88,15 @@ public class PlayerController : MonoBehaviour
     {
         inputActions.Player.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Move.canceled -= ctx => moveInput = Vector2.zero;
-        inputActions.Player.Run.performed -= ctx => isRunning = true; 
-        inputActions.Player.Run.canceled -= ctx => isRunning = false; 
+        inputActions.Player.Run.performed -= ctx => isRunning = true;
+        inputActions.Player.Run.canceled -= ctx => isRunning = false;
         inputActions.Player.Jump.performed -= ctx => HandleJump();
         inputActions.Player.Interact.performed -= ctx => HandleInteract();
         inputActions.Player.CameraSwitch.performed -= ctx => HandleSwitch();
         inputActions.Player.Look.performed -= ctx => lookInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Look.canceled -= ctx => lookInput = Vector2.zero;
+        inputActions.Player.TEMP_Die.performed -= ctx => tmp_die = true;
+        inputActions.Player.TEMP_Die.canceled -= ctx => tmp_die = false;
     }
     #endregion
 
@@ -100,8 +110,8 @@ public class PlayerController : MonoBehaviour
         Vector3 moveVelocity = moveDirection * currentSpeed;
         rb.linearVelocity = new Vector3(moveVelocity.x, rb.linearVelocity.y, moveVelocity.z);
 
-        bodyAnimator.SetFloat("Speed", moveVelocity.magnitude); // Speed로 통일
-        chestAnimator.SetFloat("Speed", moveVelocity.magnitude); // Speed로 통일
+        bodyAnimator.SetFloat("Speed", moveVelocity.magnitude);
+        chestAnimator.SetFloat("Speed", moveVelocity.magnitude);
 
         if (currentSpeed > 0.1f)
         {
@@ -110,14 +120,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     private void Look()
     {
-        float horizontalRotation = lookInput.x * rotationSpeed * Time.deltaTime; // LateUpdate이니 deltaTime 사용
+        float horizontalRotation = lookInput.x * rotationSpeed * Time.deltaTime;
         transform.Rotate(0, horizontalRotation, 0);
 
         cameraVerticalAngle -= lookInput.y * rotationSpeed * Time.deltaTime;
-        cameraVerticalAngle = Mathf.Clamp(cameraVerticalAngle, -90f, 63f); // 위 90도, 아래 50도
+        cameraVerticalAngle = Mathf.Clamp(cameraVerticalAngle, -90f, 63f);
         firstPersonCamera.transform.localRotation = Quaternion.Euler(cameraVerticalAngle, 0, 0);
     }
 
@@ -127,14 +136,12 @@ public class PlayerController : MonoBehaviour
         bodyAnimator.SetFloat("Speed", speed);
         chestAnimator.SetFloat("Speed", speed);
 
-        // Die 테스트
         if (tmp_die)
         {
             HandleDie();
         }
     }
 
-    // 임시 함수
     public void HandleAlive()
     {
         if (this == activePlayer)
@@ -168,11 +175,101 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInteract()
     {
-        if (this == activePlayer)
+        if (this != activePlayer) return;
+
+        if (heldItem != null)
         {
-            bodyAnimator.SetTrigger("Interact");
-            chestAnimator.SetTrigger("Interact");
-            Debug.Log("Interact pressed! (F 키)");
+            DropItem();
+        }
+        else
+        {
+            Ray ray = firstPersonCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, interactRange))
+            {
+                if (hit.collider.CompareTag("Pickup"))
+                {
+
+                    PickUpItem(hit.collider.gameObject);
+                }
+                else if (hit.collider.CompareTag("HorizontalButton"))
+                {
+                    // 손가락으로 누르기
+                    bodyAnimator.SetTrigger("Press");
+                    chestAnimator.SetTrigger("Press");
+                    Debug.Log("Pressed HorizontalButton!");
+                }
+                else if (hit.collider.CompareTag("VerticalButton"))
+                {
+                    // 주먹으로 치기
+                    bodyAnimator.SetTrigger("Punch");
+                    chestAnimator.SetTrigger("Punch");
+                    Debug.Log("Punched VerticalButton!");
+                }
+            }
+        }
+
+    }
+
+    private void PickUpItem(GameObject item)
+    {
+        heldItem = item;
+        Rigidbody itemRb = heldItem.GetComponent<Rigidbody>();
+        Collider itemCollider = heldItem.GetComponent<Collider>();
+
+        itemRb.isKinematic = true;
+        itemCollider.isTrigger = true;
+
+        heldItem.transform.SetParent(handTransform);
+        heldItem.transform.localPosition = Vector3.zero;
+        heldItem.transform.localRotation = Quaternion.identity;
+
+        bodyAnimator.SetTrigger("PickUp"); // 새로운 PickUp 트리거
+        chestAnimator.SetTrigger("PickUp");
+        Debug.Log("Picked up: " + item.name);
+    }
+
+    private void DropItem()
+    {
+        if (heldItem != null)
+        {
+            Rigidbody itemRb = heldItem.GetComponent<Rigidbody>();
+            Collider itemCollider = heldItem.GetComponent<Collider>();
+
+            heldItem.transform.SetParent(null);
+            itemRb.isKinematic = false;
+            itemCollider.isTrigger = false;
+
+            heldItem = null;
+
+            bodyAnimator.SetTrigger("Drop"); // 새로운 Drop 트리거
+            chestAnimator.SetTrigger("Drop");
+            Debug.Log("Dropped item");
+        }
+    }
+
+    private void UpdateTargetDot()
+    {
+        Ray ray = firstPersonCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, interactRange))
+        {
+            if (hit.collider.CompareTag("Pickup") ||
+                hit.collider.CompareTag("HorizontalButton") ||
+                hit.collider.CompareTag("VerticalButton"))
+            {
+                targetDot.enabled = true;
+            }
+            else
+            {
+                targetDot.enabled = false;
+            }
+        }
+        else
+        {
+            targetDot.enabled = false;
         }
     }
 
