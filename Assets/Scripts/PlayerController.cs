@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour
         if (this == activePlayer)
         {
             Move();
+            UpdateAnimation();
         }
     }
 
