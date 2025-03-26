@@ -43,11 +43,15 @@ public class GameManager : MonoBehaviour
     void ActivatePlayer1()
     {
         // PlayerController의 activePlayer를 Player1으로 설정
-        //PlayerController.activePlayer = player1.GetComponent<PlayerController>();
+        PlayerController.activePlayer = player1.GetComponent<PlayerController>();
 
         // Camera1 활성화
         camera1.enabled = true;
         camera2.enabled = false;
+
+        // 플레이어 오브젝트 활성화/비활성화 (선택 사항)
+        player1.SetActive(true);
+        player2.SetActive(false);
 
         isPlayer1Active = true;
         Debug.Log("Player1 활성화됨");
@@ -57,11 +61,15 @@ public class GameManager : MonoBehaviour
     void ActivatePlayer2()
     {
         // PlayerController의 activePlayer를 Player2로 설정
-        //PlayerController.activePlayer = player2.GetComponent<PlayerController>();
+        PlayerController.activePlayer = player2.GetComponent<PlayerController>();
 
         // Camera2 활성화
         camera1.enabled = false;
         camera2.enabled = true;
+
+        // 플레이어 오브젝트 활성화/비활성화 (선택 사항)
+        player1.SetActive(false);
+        player2.SetActive(true);
 
         isPlayer1Active = false;
         Debug.Log("Player2 활성화됨");
