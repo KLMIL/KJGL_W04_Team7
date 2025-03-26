@@ -233,4 +233,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetObject: {fileID: 0}
   methodName: Activate
-  activationRange: 1.2
+  activationRange: 2
