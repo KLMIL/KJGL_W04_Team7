@@ -22,8 +22,7 @@ public class WallButtonOnce : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-
-                    InvokeMethod();
+                    PressButton();
                 }
             }
         }
@@ -58,7 +57,7 @@ public class WallButtonOnce : MonoBehaviour
     }
 
 
-    private void InvokeMethod()
+    public void PressButton()
     {
         if (targetObject != null)
         {
