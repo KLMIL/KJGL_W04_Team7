@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Reflection;
 
 public class NumberPuzzle : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class NumberPuzzle : MonoBehaviour
     private List<int> activationOrder; // 실제 활성화 순서를 기록
     private int[] correctOrder = { 2, 1, 0, 3 }; // 올바른 순서
     private bool isPuzzleComplete = false; // 퍼즐 완료 여부
+    public GameObject targetObject; // 호출할 대상 오브젝트
+    private string methodName = "Activate"; // 호출할 메소드 이름
 
     void Start()
     {
@@ -71,6 +74,15 @@ public class NumberPuzzle : MonoBehaviour
                 Debug.Log("순서가 맞습니다! 퍼즐 완료!");
                 isPuzzleComplete = true; // 퍼즐 완료 상태로 설정
                 // 여기서 퍼즐 완료 시 추가 로직을 넣을 수 있음
+                if (targetObject != null)
+                {
+                    targetObject.SendMessage(methodName, SendMessageOptions.DontRequireReceiver);
+                    Debug.Log($"{methodName} 메소드가 호출되었습니다!");
+                }
+                else
+                {
+                    Debug.LogWarning("타겟 오브젝트가 설정되지 않았습니다.");
+                }
             }
             else
             {
