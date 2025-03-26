@@ -60,7 +60,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "TEMP_Die",
+                    "name": "Die",
                     "type": "Button",
                     "id": "ff239708-a851-471d-926b-01396105113d",
                     "expectedControlType": "",
@@ -187,7 +187,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "TEMP_Die",
+                    "action": "Die",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
