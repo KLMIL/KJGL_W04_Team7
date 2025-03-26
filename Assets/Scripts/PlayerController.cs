@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
     public Animator bodyAnimator;
     public Animator chestAnimator;
     public Renderer chestRenderer;
-    public Image targetDot;
+    //public Image targetDot;
     public Transform handTransform;
 
     #endregion
@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
         if (firstPersonCamera == null) Debug.LogError("카메라가 연결되지 않았습니다!");
         if (chestRenderer == null) Debug.LogError("chestRenderer가 연결되지 않았습니다!");
         if (handTransform == null) Debug.LogError("handTransform이 연결되지 않았습니다!");
-        if (targetDot == null) Debug.LogError("targetDot이 연결되지 않았습니다!");
+        //if (targetDot == null) Debug.LogError("targetDot이 연결되지 않았습니다!");
     }
 
     private void AddInputActions()
@@ -120,12 +120,12 @@ public class PlayerController : MonoBehaviour
                 Move();
                 Look();
                 UpdateAnimation();
-                UpdateTargetDot();
+                //UpdateTargetDot();
             }
             else
             {
                 UpdateAnimation(); // 상호작용 중에도 애니메이션은 업데이트
-                UpdateTargetDot(); // 하얀 점도 유지
+                //UpdateTargetDot(); // 하얀 점도 유지
             }
         }
     }
@@ -322,29 +322,29 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private void UpdateTargetDot()
-    {
-        Ray ray = firstPersonCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-        RaycastHit hit;
+    //private void UpdateTargetDot()
+    //{
+    //    Ray ray = firstPersonCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+    //    RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, interactRange))
-        {
-            if (hit.collider.CompareTag("Pickup") ||
-                hit.collider.CompareTag("HorizontalButton") ||
-                hit.collider.CompareTag("VerticalButton"))
-            {
-                targetDot.enabled = true;
-            }
-            else
-            {
-                targetDot.enabled = false;
-            }
-        }
-        else
-        {
-            targetDot.enabled = false;
-        }
-    }
+    //    if (Physics.Raycast(ray, out hit, interactRange))
+    //    {
+    //        if (hit.collider.CompareTag("Pickup") ||
+    //            hit.collider.CompareTag("HorizontalButton") ||
+    //            hit.collider.CompareTag("VerticalButton"))
+    //        {
+    //            targetDot.enabled = true;
+    //        }
+    //        else
+    //        {
+    //            targetDot.enabled = false;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        targetDot.enabled = false;
+    //    }
+    //}
 
     #endregion
 }
