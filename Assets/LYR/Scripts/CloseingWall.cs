@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Linq; // Any 메서드 사용을 위해 추가
 
-public class CloseingWall : MonoBehaviour
+public class ClosingWall : MonoBehaviour
 {
     // 공용 변수
     public GameObject wallPrefab;        // 벽으로 사용할 큐브 프리팹
