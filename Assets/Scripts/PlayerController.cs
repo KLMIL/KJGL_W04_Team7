@@ -35,8 +35,8 @@ public class PlayerController : MonoBehaviour
 
         inputActions.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Move.canceled += ctx => moveInput = Vector2.zero;
-        inputActions.Player.Run.performed += ctx => { isRunning = true; UpdateSpeedImmediately(); }; // 구독 추가
-        inputActions.Player.Run.canceled += ctx => { isRunning = false; UpdateSpeedImmediately(); }; // 구독 추가
+        inputActions.Player.Run.performed += ctx => isRunning = true ;
+        inputActions.Player.Run.canceled += ctx => isRunning = false;
         inputActions.Player.Jump.performed += ctx => HandleJump();
         inputActions.Player.Interact.performed += ctx => HandleInteract();
         inputActions.Player.CameraSwitch.performed += ctx => HandleSwitch();
@@ -70,8 +70,8 @@ public class PlayerController : MonoBehaviour
     {
         inputActions.Player.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Move.canceled -= ctx => moveInput = Vector2.zero;
-        inputActions.Player.Run.performed -= ctx => { isRunning = true; UpdateSpeedImmediately(); };
-        inputActions.Player.Run.canceled -= ctx => { isRunning = false; UpdateSpeedImmediately(); };
+        inputActions.Player.Run.performed -= ctx => isRunning = true; 
+        inputActions.Player.Run.canceled -= ctx => isRunning = false; 
         inputActions.Player.Jump.performed -= ctx => HandleJump();
         inputActions.Player.Interact.performed -= ctx => HandleInteract();
         inputActions.Player.CameraSwitch.performed -= ctx => HandleSwitch();
@@ -89,26 +89,17 @@ public class PlayerController : MonoBehaviour
 
         Vector3 moveVelocity = moveDirection * currentSpeed;
         rb.linearVelocity = new Vector3(moveVelocity.x, rb.linearVelocity.y, moveVelocity.z);
-    }
 
-    private void UpdateSpeedImmediately()
-    {
-        float currentSpeed = isRunning ? runSpeed : walkSpeed;
-        Vector3 forwardMovement = transform.forward * moveInput.y;
-        Vector3 sideMovement = transform.right * moveInput.x;
-        Vector3 moveDirection = (forwardMovement + sideMovement).normalized;
-
-        Vector3 moveVelocity = moveDirection * currentSpeed;
-        rb.linearVelocity = new Vector3(moveVelocity.x, rb.linearVelocity.y, moveVelocity.z);
         bodyAnimator.SetFloat("Speed", moveVelocity.magnitude); // Speed로 통일
         chestAnimator.SetFloat("Speed", moveVelocity.magnitude); // Speed로 통일
-        
+
         if (currentSpeed > 0.1f)
         {
             bodyAnimator.SetBool("Run", isRunning);
             chestAnimator.SetBool("Run", isRunning);
         }
     }
+
 
     private void Look()
     {
