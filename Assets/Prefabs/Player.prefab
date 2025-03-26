@@ -634,7 +634,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1352895689795760489}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!114 &8519550277986922096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1098,6 +1098,37 @@ Transform:
   m_Children:
   - {fileID: 3797798505597182031}
   m_Father: {fileID: 8733341282120917080}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2307866288298804019
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1269661082446834114}
+  m_Layer: 0
+  m_Name: Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1269661082446834114
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2307866288298804019}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.03, y: 1, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2926170961703744985}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2318632089079327479
 GameObject:
@@ -4710,6 +4741,7 @@ Transform:
   m_Children:
   - {fileID: 3193064990238099923}
   - {fileID: 7902870702453329635}
+  - {fileID: 1269661082446834114}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5681509990643470440
@@ -4735,6 +4767,9 @@ MonoBehaviour:
   chestAnimator: {fileID: 3927837008798577912}
   tmp_die: 0
   chestRenderer: {fileID: 7166925114225841325}
+  handTransform: {fileID: 1269661082446834114}
+  targetDot: {fileID: 0}
+  isInteracting: 0
 --- !u!136 &8793688563685802829
 CapsuleCollider:
   m_ObjectHideFlags: 0
