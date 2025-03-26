@@ -1,14 +1,13 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WallButtonOnceList : MonoBehaviour
+public class Square_Button : MonoBehaviour
 {
     public List<GameObject> targetObjects; // 호출할 대상 오브젝트
     public string methodName = "Activate"; // 호출할 메소드 이름
-    public float activationRange = 2f; // 버튼 활성화 범위 (거리)
-    
-
+    public float width = 2f;  // X축 방향 너비 (큐브의 가로 크기)
+    public float height = 2f; // Y축 방향 높이 (큐브의 세로 크기)
+    public float depth = 2f;  // Z축 방향 깊이 (큐브의 깊이)
 
     void Update()
     {
@@ -16,20 +15,23 @@ public class WallButtonOnceList : MonoBehaviour
         GameObject closestPlayer = FindClosestPlayer();
 
         // 가장 가까운 플레이어와의 거리 체크 및 'E' 키 입력 감지
-        if (closestPlayer != null && Vector3.Distance(transform.position, closestPlayer.transform.position) <= activationRange)
+        if (closestPlayer != null)
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (IsPlayerInCubeRange(closestPlayer.transform.position))
             {
-                InvokeMethod();
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    InvokeMethod();
+                }
             }
         }
-
     }
 
     // 가장 가까운 플레이어 찾기
     private GameObject FindClosestPlayer()
     {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player"); // 모든 "Player" 태그 오브젝트 찾기
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player"); // 모든 "Player" 태그 오브젝트 찾기 
+
         if (players.Length == 0)
         {
             Debug.LogWarning("태그가 'Player'인 오브젝트가 없습니다.");
@@ -52,6 +54,19 @@ public class WallButtonOnceList : MonoBehaviour
         return closest;
     }
 
+    // 플레이어가 큐브 범위 안에 있는지 확인
+    private bool IsPlayerInCubeRange(Vector3 playerPosition)
+    {
+        Vector3 buttonPosition = transform.position;
+
+        // 각 축에서의 거리 차이 계산
+        float xDiff = Mathf.Abs(playerPosition.x - buttonPosition.x);
+        float yDiff = Mathf.Abs(playerPosition.y - buttonPosition.y);
+        float zDiff = Mathf.Abs(playerPosition.z - buttonPosition.z);
+
+        // 큐브 범위 내에 있는지 확인 (절반 크기와 비교)
+        return xDiff <= width / 2f && yDiff <= height / 2f && zDiff <= depth / 2f;
+    }
 
     private void InvokeMethod()
     {
@@ -65,7 +80,7 @@ public class WallButtonOnceList : MonoBehaviour
                     Debug.Log($"{methodName} 메소드가 호출되었습니다!");
                 }
             }
-            
+
         }
         else
         {
@@ -76,7 +91,7 @@ public class WallButtonOnceList : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, activationRange);
+        // 큐브 형태로 기즈모 그리기
+        Gizmos.DrawWireCube(transform.position, new Vector3(width, height, depth));
     }
-
 }

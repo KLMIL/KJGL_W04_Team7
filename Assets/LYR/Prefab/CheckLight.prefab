@@ -683,7 +683,7 @@ GameObject:
   m_Component:
   - component: {fileID: 247828300192537212}
   m_Layer: 0
-  m_Name: GreenLight
+  m_Name: CheckLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
