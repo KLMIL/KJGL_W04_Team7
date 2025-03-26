@@ -135,6 +135,8 @@ public class GameManager : MonoBehaviour
     {
         player1.transform.position = player1SpawnPoint; // 영구 스폰 포인트로 이동
         player2.transform.position = player2SpawnPoint; // 영구 스폰 포인트로 이동
+        player1.GetComponent<PlayerController>().HandleAlive();
+        player2.GetComponent<PlayerController>().HandleAlive();
         Debug.Log("Players respawned - Player1 at: " + player1SpawnPoint + ", Player2 at: " + player2SpawnPoint);
         ResetPassedFlags(); // 리스폰 시 플래그 초기화
     }
