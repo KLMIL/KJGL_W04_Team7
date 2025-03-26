@@ -146,7 +146,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""TEMP_Die"",
+                    ""name"": ""Die"",
                     ""type"": ""Button"",
                     ""id"": ""ff239708-a851-471d-926b-01396105113d"",
                     ""expectedControlType"": """",
@@ -273,7 +273,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""TEMP_Die"",
+                    ""action"": ""Die"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -290,7 +290,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_CameraSwitch = m_Player.FindAction("CameraSwitch", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
-        m_Player_TEMP_Die = m_Player.FindAction("TEMP_Die", throwIfNotFound: true);
+        m_Player_Die = m_Player.FindAction("Die", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -377,7 +377,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_CameraSwitch;
     private readonly InputAction m_Player_Look;
-    private readonly InputAction m_Player_TEMP_Die;
+    private readonly InputAction m_Player_Die;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -414,9 +414,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Look => m_Wrapper.m_Player_Look;
         /// <summary>
-        /// Provides access to the underlying input action "Player/TEMP_Die".
+        /// Provides access to the underlying input action "Player/Die".
         /// </summary>
-        public InputAction @TEMP_Die => m_Wrapper.m_Player_TEMP_Die;
+        public InputAction @Die => m_Wrapper.m_Player_Die;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -461,9 +461,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
-            @TEMP_Die.started += instance.OnTEMP_Die;
-            @TEMP_Die.performed += instance.OnTEMP_Die;
-            @TEMP_Die.canceled += instance.OnTEMP_Die;
+            @Die.started += instance.OnDie;
+            @Die.performed += instance.OnDie;
+            @Die.canceled += instance.OnDie;
         }
 
         /// <summary>
@@ -493,9 +493,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
-            @TEMP_Die.started -= instance.OnTEMP_Die;
-            @TEMP_Die.performed -= instance.OnTEMP_Die;
-            @TEMP_Die.canceled -= instance.OnTEMP_Die;
+            @Die.started -= instance.OnDie;
+            @Die.performed -= instance.OnDie;
+            @Die.canceled -= instance.OnDie;
         }
 
         /// <summary>
@@ -579,11 +579,11 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLook(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "TEMP_Die" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Die" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnTEMP_Die(InputAction.CallbackContext context);
+        void OnDie(InputAction.CallbackContext context);
     }
 }
