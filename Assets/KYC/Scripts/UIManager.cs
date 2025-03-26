@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     public GameObject gameStartScreen;
     public GameObject gameOverScreen;
     public TextMeshProUGUI stageText;
+    public GameObject escapeSuccess;
     public static UIManager Instance { get; private set; }
 
     void Awake()
