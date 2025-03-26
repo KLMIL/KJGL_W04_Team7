@@ -14,14 +14,17 @@ public class WallButtonOnce : MonoBehaviour
         // 가장 가까운 플레이어 찾기
         GameObject closestPlayer = FindClosestPlayer();
 
-        Debug.Log(closestPlayer);
         // 가장 가까운 플레이어와의 거리 체크 및 'E' 키 입력 감지
-        if (closestPlayer != null && Vector3.Distance(transform.position, closestPlayer.transform.position) <= activationRange)
+        if (closestPlayer != null)
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Vector3.Distance(transform.position, closestPlayer.transform.position) <= activationRange)
+
             {
-                Debug.Log(1);
-                InvokeMethod();
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+
+                    InvokeMethod();
+                }
             }
         }
 
@@ -30,7 +33,8 @@ public class WallButtonOnce : MonoBehaviour
     // 가장 가까운 플레이어 찾기
     private GameObject FindClosestPlayer()
     {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player"); // 모든 "Player" 태그 오브젝트 찾기
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player"); // 모든 "Player" 태그 오브젝트 찾기 
+       
         if (players.Length == 0)
         {
             Debug.LogWarning("태그가 'Player'인 오브젝트가 없습니다.");
