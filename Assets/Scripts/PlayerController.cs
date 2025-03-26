@@ -22,6 +22,10 @@ public class PlayerController : MonoBehaviour
 
     public static PlayerController activePlayer;
 
+    // 죽는 모션 테스트
+    [SerializeField] private bool tmp_die;
+    public Renderer chestRenderer;
+
     #region LifeCycle
     void Awake()
     {
@@ -35,13 +39,18 @@ public class PlayerController : MonoBehaviour
 
         inputActions.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Move.canceled += ctx => moveInput = Vector2.zero;
-        inputActions.Player.Run.performed += ctx => isRunning = true ;
+        inputActions.Player.Run.performed += ctx => isRunning = true;
         inputActions.Player.Run.canceled += ctx => isRunning = false;
         inputActions.Player.Jump.performed += ctx => HandleJump();
         inputActions.Player.Interact.performed += ctx => HandleInteract();
         inputActions.Player.CameraSwitch.performed += ctx => HandleSwitch();
         inputActions.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Look.canceled += ctx => lookInput = Vector2.zero;
+
+        // 임시 죽는기능 테스트용 코드. OnDestroy 작성 안함
+        inputActions.Player.TEMP_Die.performed += ctx => tmp_die = true;
+        inputActions.Player.TEMP_Die.canceled += ctx => tmp_die = false;
+
 
         //Cursor.lockState = CursorLockMode.Locked;
     }
@@ -117,6 +126,33 @@ public class PlayerController : MonoBehaviour
         speed = rb.linearVelocity.magnitude;
         bodyAnimator.SetFloat("Speed", speed);
         chestAnimator.SetFloat("Speed", speed);
+
+        // Die 테스트
+        if (tmp_die)
+        {
+            HandleDie();
+        }
+    }
+
+    // 임시 함수
+    public void HandleAlive()
+    {
+        if (this == activePlayer)
+        {
+            bodyAnimator.SetTrigger("Alive");
+            chestAnimator.SetTrigger("Alive");
+            chestRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+        }
+    }
+
+    private void HandleDie()
+    {
+        if (this == activePlayer)
+        {
+            bodyAnimator.SetTrigger("Die");
+            chestAnimator.SetTrigger("Die");
+            chestRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+        }
     }
 
     private void HandleJump()
