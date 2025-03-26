@@ -8,7 +8,7 @@ ModelImporter:
     second: Punch
   - first:
       74: 5327579647636344352
-    second: PunchLeft
+    second: Punch
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -37,7 +37,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: PunchLeft
+      name: Punch
       takeName: human_male_punch_01
       internalID: 0
       firstFrame: 2
