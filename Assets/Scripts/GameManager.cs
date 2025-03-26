@@ -70,7 +70,10 @@ public class GameManager : MonoBehaviour
         camera1.enabled = true;
         camera2.enabled = false;
         isPlayer1Active = true;
-        Debug.Log("Player1 활성화됨");
+        // Player1에 "Player" 태그 설정, Player2에서 태그 제거
+        player1.tag = "Player";
+        player2.tag = "Untagged"; // 또는 다른 태그로 변경
+        Debug.Log("Player1 활성화됨, Player2 태그 제거됨");
     }
 
     void ActivatePlayer2()
@@ -79,7 +82,9 @@ public class GameManager : MonoBehaviour
         camera1.enabled = false;
         camera2.enabled = true;
         isPlayer1Active = false;
-        Debug.Log("Player2 활성화됨");
+        player2.tag = "Player";
+        player1.tag = "Untagged"; // 또는 다른 태그로 변경
+        Debug.Log("Player2 활성화됨, Player1 태그 제거됨");
     }
 
     public void PlusStageData()
