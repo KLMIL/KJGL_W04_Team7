@@ -74,4 +74,15 @@ public class GreenLightControl : MonoBehaviour
             }
         }
     }
+
+    public void Deactivate()
+    {
+        if (objectLight != null)
+        {
+            objectLight.enabled = false; // ∂Û¿Ã∆Æ ≤Ù±‚
+        }
+        isActive = false;
+        activeTimer = 0f;
+    }
+
 }
