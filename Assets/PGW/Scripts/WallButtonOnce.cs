@@ -14,11 +14,13 @@ public class WallButtonOnce : MonoBehaviour
         // 가장 가까운 플레이어 찾기
         GameObject closestPlayer = FindClosestPlayer();
 
+        Debug.Log(closestPlayer);
         // 가장 가까운 플레이어와의 거리 체크 및 'E' 키 입력 감지
         if (closestPlayer != null && Vector3.Distance(transform.position, closestPlayer.transform.position) <= activationRange)
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
+                Debug.Log(1);
                 InvokeMethod();
             }
         }
