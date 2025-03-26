@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         UIManager.Instance.gameOverScreen.SetActive(false);
         UIManager.Instance.gameStartScreen.SetActive(true);
+        UIManager.Instance.escapeSuccess.SetActive(false);
         UIManager.Instance.stageText.text = "";
     }
 
