@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &73006451 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9090678697765513192, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
+  m_PrefabInstance: {fileID: 1744368551}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &89731401
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,7 +409,7 @@ PrefabInstance:
     - target: {fileID: 3976934808701286487, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
       propertyPath: animator
       value: 
-      objectReference: {fileID: 2118472707}
+      objectReference: {fileID: 0}
     - target: {fileID: 5171629729314943487, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
       propertyPath: m_Name
       value: Player
@@ -465,15 +470,19 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
+    - target: {fileID: 9090678697765513192, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
+      propertyPath: m_Name
+      value: Player1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
---- !u!95 &673908436 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 9079605068249206782, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
-  m_PrefabInstance: {fileID: 1744368551}
+--- !u!20 &516414475 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 6357613171991675049, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
+  m_PrefabInstance: {fileID: 275601386}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &731984429
 GameObject:
@@ -846,10 +855,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6a84adc1e6b29845b9db79ad8cb62f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1: {fileID: 1291131871}
-  player2: {fileID: 1459106112}
-  camera1: {fileID: 1570953382}
-  camera2: {fileID: 1371504981}
+  player1: {fileID: 998301292}
+  player2: {fileID: 73006451}
+  camera1: {fileID: 516414475}
+  camera2: {fileID: 1288386445}
   StageData: 0
   player1SpawnPoint: {x: 0, y: 0, z: 0}
   player2SpawnPoint: {x: 0, y: 0, z: 0}
@@ -980,6 +989,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &998301292 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9090678697765513192, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
+  m_PrefabInstance: {fileID: 275601386}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1193410765
 GameObject:
   m_ObjectHideFlags: 0
@@ -1017,7 +1031,11 @@ MonoBehaviour:
   runSpeed: 8
   jumpForce: 5
   rotationSpeed: 1
-  animator: {fileID: 0}
+  firstPersonCamera: {fileID: 0}
+  speed: 0
+  isRunning: 0
+  bodyAnimator: {fileID: 0}
+  chestAnimator: {fileID: 0}
 --- !u!135 &1193410767
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1134,10 +1152,10 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!1 &1291131871 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5171629729314943487, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
-  m_PrefabInstance: {fileID: 275601386}
+--- !u!20 &1288386445 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 6357613171991675049, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
+  m_PrefabInstance: {fileID: 1744368551}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1358017008
 GameObject:
@@ -1261,16 +1279,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forPlayer1: 1
---- !u!20 &1371504981 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 6711947026824255968, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
-  m_PrefabInstance: {fileID: 1744368551}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1459106112 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5171629729314943487, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
-  m_PrefabInstance: {fileID: 1744368551}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1526911363
 GameObject:
   m_ObjectHideFlags: 0
@@ -1308,7 +1316,11 @@ MonoBehaviour:
   runSpeed: 8
   jumpForce: 5
   rotationSpeed: 1
-  animator: {fileID: 0}
+  firstPersonCamera: {fileID: 0}
+  speed: 0
+  isRunning: 0
+  bodyAnimator: {fileID: 0}
+  chestAnimator: {fileID: 0}
 --- !u!135 &1526911365
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1668,11 +1680,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!20 &1570953382 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 6711947026824255968, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
-  m_PrefabInstance: {fileID: 275601386}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1698048234
 GameObject:
   m_ObjectHideFlags: 0
@@ -1789,6 +1796,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2926170961703744985, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 43.47
+      objectReference: {fileID: 0}
     - target: {fileID: 3562981241722435846, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1796,7 +1807,7 @@ PrefabInstance:
     - target: {fileID: 3976934808701286487, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
       propertyPath: animator
       value: 
-      objectReference: {fileID: 673908436}
+      objectReference: {fileID: 0}
     - target: {fileID: 5171629729314943487, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
       propertyPath: m_Name
       value: Player (1)
@@ -1845,16 +1856,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9090678697765513192, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
+      propertyPath: m_Name
+      value: Player2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
---- !u!95 &2118472707 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 9079605068249206782, guid: 597efda4e22824940bd8d3e9de4afa34, type: 3}
-  m_PrefabInstance: {fileID: 275601386}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
