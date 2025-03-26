@@ -30,9 +30,10 @@ public class StairBottom : MonoBehaviour
         }
     }
 
-    private void HandleButtonState(bool pressed)
+    private void HandleButtonState(bool pressed, GameObject buttonObject)
     {
-        if (pressed && !isMoving)
+        // buttonObject가 bottomButtons에 포함되어 있는지 확인
+        if (pressed && !isMoving && bottomButtons.Any(b => b != null && b.gameObject == buttonObject))
         {
             if (currentCoroutine != null) StopCoroutine(currentCoroutine);
             currentCoroutine = StartCoroutine(MoveUpAndStay());
