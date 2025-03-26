@@ -3,7 +3,7 @@ using System;
 
 public class WallButtonDuration : MonoBehaviour
 {
-    public Action<bool> onPressedStateChanged; // 활성화 상태 변화 알림 (true: 활성화, false: 비활성화)
+    public Action<bool, GameObject> onPressedStateChanged; // 활성화 상태 변화 알림 (true: 활성화, false: 비활성화)
     public Action onIntervalTriggered;        // 주기적으로 호출되는 이벤트
 
     private Vector3 originalPosition; // 버튼의 원래 위치
@@ -98,7 +98,7 @@ public class WallButtonDuration : MonoBehaviour
     {
         isActive = true;
         activeTimer = activeDuration; // 타이머 설정
-        onPressedStateChanged?.Invoke(true); // 활성화 상태 알림
+        onPressedStateChanged?.Invoke(true, this.gameObject); // 활성화 상태 알림
         Debug.Log("WallButton 활성화됨");
     }
 
@@ -106,7 +106,7 @@ public class WallButtonDuration : MonoBehaviour
     {
         isActive = false;
         isPressed = false; // 눌림 상태 해제
-        onPressedStateChanged?.Invoke(false); // 비활성화 상태 알림
+        onPressedStateChanged?.Invoke(false, this.gameObject); // 비활성화 상태 알림
         Debug.Log("WallButton 비활성화됨");
     }
 

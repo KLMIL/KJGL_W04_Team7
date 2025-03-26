@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class StairWallDuration : MonoBehaviour
 {
@@ -44,9 +45,9 @@ public class StairWallDuration : MonoBehaviour
         }
     }
 
-    private void HandleButtonState(bool active)
+    private void HandleButtonState(bool active, GameObject gameObject)
     {
-        if (active)
+        if (active && wallButtons.Any(b => b != null && b.gameObject == gameObject))
         {
             activeButtonCount++; // 활성화된 버튼 수 증가
             if (!isMoving)
