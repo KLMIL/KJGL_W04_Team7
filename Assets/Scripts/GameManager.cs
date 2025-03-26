@@ -59,9 +59,22 @@ public class GameManager : MonoBehaviour
         {
             SwitchPlayer();
         }
-        if (Input.GetKeyDown(KeyCode.R))
+        if ((isPlayer1Dead || isPlayer2Dead) && Input.GetKeyDown(KeyCode.R))
         {
             RespawnPlayers(); // R 키로 테스트용 리스폰
+        }
+
+        if(player1.GetComponent<Transform>().position.y < -10f)
+        {
+            isPlayer1Dead = true;
+        }
+        if (player2.GetComponent<Transform>().position.y < -10f)
+        {
+            isPlayer2Dead = true;
+        }
+        if(isPlayer1Dead || isPlayer2Dead)
+        {
+            EndGame();
         }
     }
 
@@ -133,10 +146,14 @@ public class GameManager : MonoBehaviour
 
     public void RespawnPlayers()
     {
+        UIManager.Instance.gameOverScreen.SetActive(false);
         player1.transform.position = player1SpawnPoint; // 영구 스폰 포인트로 이동
         player2.transform.position = player2SpawnPoint; // 영구 스폰 포인트로 이동
+        isPlayer1Dead = false;
+        isPlayer2Dead = false;
         player1.GetComponent<PlayerController>().HandleAlive();
         player2.GetComponent<PlayerController>().HandleAlive();
+
         Debug.Log("Players respawned - Player1 at: " + player1SpawnPoint + ", Player2 at: " + player2SpawnPoint);
         ResetPassedFlags(); // 리스폰 시 플래그 초기화
     }
