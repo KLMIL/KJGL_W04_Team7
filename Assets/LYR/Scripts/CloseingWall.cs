@@ -55,6 +55,7 @@ public class CloseingWall : MonoBehaviour
                 }
             }
         }
+        //Activate();
     }
 
     void CreateWalls()
