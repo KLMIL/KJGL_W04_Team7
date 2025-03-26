@@ -8,15 +8,17 @@ public class GameManager : MonoBehaviour
     public GameObject player2;
     public Camera camera1;
     public Camera camera2;
-    [SerializeField] private int StageData;
+    [SerializeField] public int StageData;
     [SerializeField] private Vector3 player1SpawnPoint; // 영구 스폰 포인트
     [SerializeField] private Vector3 player2SpawnPoint; // 영구 스폰 포인트
     [SerializeField] private Vector3 tempPlayer1SpawnPoint; // 임시 스폰 포인트
     [SerializeField] private Vector3 tempPlayer2SpawnPoint; // 임시 스폰 포인트
     [SerializeField] private bool player1Passed;
     [SerializeField] private bool player2Passed;
-    [SerializeField] private bool isPlayer1Dead;
+    [SerializeField] public bool isPlayer1Dead;
     [SerializeField] private bool isPlayer2Dead;
+    [SerializeField] private GameObject map;
+    [SerializeField] private GameObject mapPrefab;
 
     private bool isPlayer1Active = true;
 
@@ -145,6 +147,25 @@ public class GameManager : MonoBehaviour
 
     public void RespawnPlayers()
     {
+        // 기존 맵 파괴
+        if (map != null)
+        {
+            Destroy(map);
+            Debug.Log("기존 맵이 파괴되었습니다.");
+        }
+
+        // 새 맵 생성
+        if (mapPrefab != null)
+        {
+            map = Instantiate(mapPrefab, new Vector3(94.362f, 7.14f, 162.228f), Quaternion.identity);
+            Debug.Log("새 맵이 생성되었습니다.");
+        }
+        else
+        {
+            Debug.LogError("Map Prefab이 설정되지 않았습니다!");
+        }
+
+        // UI 및 플레이어 리스폰
         UIManager.Instance.gameOverScreen.SetActive(false);
         player1.transform.position = player1SpawnPoint; // 영구 스폰 포인트로 이동
         player2.transform.position = player2SpawnPoint; // 영구 스폰 포인트로 이동
@@ -156,6 +177,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("Players respawned - Player1 at: " + player1SpawnPoint + ", Player2 at: " + player2SpawnPoint);
         ResetPassedFlags(); // 리스폰 시 플래그 초기화
     }
+
+
 
     public void SetPlayer1Passed(bool value)
     {

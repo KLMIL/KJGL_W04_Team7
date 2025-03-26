@@ -206,6 +206,7 @@ public class PlayerController : MonoBehaviour
         if (this == activePlayer)
         {
             isDead = true;
+            GameManager.Instance.isPlayer1Dead = true;
             bodyAnimator.SetTrigger("Die");
             chestAnimator.SetTrigger("Die");
             chestRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;

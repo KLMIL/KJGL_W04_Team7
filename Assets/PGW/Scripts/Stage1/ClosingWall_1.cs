@@ -7,6 +7,8 @@ public class ClosingWall_1 : MonoBehaviour
 
     private GameObject leftWall;
     private GameObject rightWall;
+    public bool isPlayerPassed = false;
+    public PlayerController playerController;
     private Vector3 leftOriginalPos;
     private Vector3 rightOriginalPos;
     private bool isOpening = false;
@@ -58,7 +60,12 @@ public class ClosingWall_1 : MonoBehaviour
                 if (t >= 1f)
                 {
                     isClosing = false;
+                    if (!isPlayerPassed)
+                    {
+                        playerController.HandleDie();
+                    }
                     closeTimer = 0f;
+                    
                 }
             }
         }

@@ -5,6 +5,7 @@ public class Door : MonoBehaviour
 {
     public bool forPlayer1; // Player1용 문인지 여부
     private Vector3 spawnPointExtra;
+    public int index;
 
     void Start()
     {
@@ -15,14 +16,14 @@ public class Door : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (forPlayer1)
+            if (forPlayer1 && index >= GameManager.Instance.StageData)
             {
                 // Player1이 통과하면 임시 스폰 포인트 설정
                 GameManager.Instance.SetTempPlayer1SpawnPoint(transform.position + spawnPointExtra);
                 GameManager.Instance.SetPlayer1Passed(true);
                 Debug.Log("player1 passed and set temp spawn point: " + (transform.position + spawnPointExtra));
             }
-            else
+            else if(index >= GameManager.Instance.StageData)
             {
                 // Player2가 통과하면 임시 스폰 포인트 설정
                 GameManager.Instance.SetTempPlayer2SpawnPoint(transform.position + spawnPointExtra);

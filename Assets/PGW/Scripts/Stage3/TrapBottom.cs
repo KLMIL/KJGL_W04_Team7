@@ -5,7 +5,7 @@ public class TrapBottom : MonoBehaviour
 {
     private bool isPlayerOn = false; // 플레이어가 바닥을 밟고 있는지 여부
     public float moveSpeed = 5f; // 올라가고 내려가는 속도
-    private float targetY = 64f; // 목표 Y 값
+    private float targetY = 67f; // 목표 Y 값
     private bool isRising = false; // 상승 중인지 여부
     private Coroutine riseCoroutine; // 상승 코루틴 참조
     private Vector3 originalPosition; // 원래 위치 저장
