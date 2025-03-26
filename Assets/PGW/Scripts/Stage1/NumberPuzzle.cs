@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using System;
-using System.Reflection;
 
 public class NumberPuzzle : MonoBehaviour
 {
@@ -73,7 +72,8 @@ public class NumberPuzzle : MonoBehaviour
             {
                 Debug.Log("순서가 맞습니다! 퍼즐 완료!");
                 isPuzzleComplete = true; // 퍼즐 완료 상태로 설정
-                // 여기서 퍼즐 완료 시 추가 로직을 넣을 수 있음
+
+                // 타겟 오브젝트의 메소드 호출
                 if (targetObject != null)
                 {
                     targetObject.SendMessage(methodName, SendMessageOptions.DontRequireReceiver);
@@ -83,6 +83,9 @@ public class NumberPuzzle : MonoBehaviour
                 {
                     Debug.LogWarning("타겟 오브젝트가 설정되지 않았습니다.");
                 }
+
+                // 3초 후 리셋을 위해 코루틴 시작
+                StartCoroutine(ResetAfterDelay(3f));
             }
             else
             {
@@ -103,6 +106,15 @@ public class NumberPuzzle : MonoBehaviour
                 light.SetActive(false); // 모든 라이트 비활성화
             }
         }
+        isPuzzleComplete = false; // 퍼즐 완료 상태 해제
         Debug.Log("퍼즐이 초기화되었습니다. 다시 시도하세요.");
+    }
+
+    // 지정된 시간 후 퍼즐을 리셋하는 코루틴
+    private System.Collections.IEnumerator ResetAfterDelay(float delay)
+    {
+        Debug.Log($"퍼즐 완료 후 {delay}초 대기 후 리셋됩니다.");
+        yield return new WaitForSeconds(delay);
+        ResetPuzzle();
     }
 }
