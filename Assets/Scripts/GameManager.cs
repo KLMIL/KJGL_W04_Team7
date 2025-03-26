@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Vector3 tempPlayer2SpawnPoint; // 임시 스폰 포인트
     [SerializeField] private bool player1Passed;
     [SerializeField] private bool player2Passed;
+    [SerializeField] private bool isPlayer1Dead;
+    [SerializeField] private bool isPlayer2Dead;
 
     private bool isPlayer1Active = true;
 
@@ -26,22 +28,33 @@ public class GameManager : MonoBehaviour
             return;
         }
         Instance = this;
-    }
 
-    void Start()
+    }
+    public void GameStart()
     {
         ActivatePlayer1();
+        Time.timeScale = 1f;
+        UIManager.Instance.gameStartScreen.SetActive(false);
         StageData = 1;
         player1SpawnPoint = player1.transform.position;
         player2SpawnPoint = player2.transform.position;
         tempPlayer1SpawnPoint = player1SpawnPoint; // 초기값 설정
         tempPlayer2SpawnPoint = player2SpawnPoint; // 초기값 설정
+        Cursor.lockState = CursorLockMode.Locked;
         player1Passed = false;
         player2Passed = false;
+    }
+    void Start()
+    {
+        Time.timeScale = 0f;
+        UIManager.Instance.gameOverScreen.SetActive(false);
+        UIManager.Instance.gameStartScreen.SetActive(true);
+        UIManager.Instance.stageText.text = "";
     }
 
     void Update()
     {
+        UIManager.Instance.stageText.text = "Stage " + StageData;
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             SwitchPlayer();
@@ -120,6 +133,8 @@ public class GameManager : MonoBehaviour
     {
         player1.transform.position = player1SpawnPoint; // 영구 스폰 포인트로 이동
         player2.transform.position = player2SpawnPoint; // 영구 스폰 포인트로 이동
+        player1.GetComponent<PlayerController>().HandleAlive();
+        player2.GetComponent<PlayerController>().HandleAlive();
         Debug.Log("Players respawned - Player1 at: " + player1SpawnPoint + ", Player2 at: " + player2SpawnPoint);
         ResetPassedFlags(); // 리스폰 시 플래그 초기화
     }
@@ -143,5 +158,18 @@ public class GameManager : MonoBehaviour
     {
         player1Passed = false;
         player2Passed = false;
+    }
+    public void SetPlayer1Dead(bool value)
+    {
+        isPlayer1Dead = value;
+    }
+    public void SetPlayer2Dead(bool value)
+    {
+        isPlayer2Dead = value;
+    }
+    private void EndGame()
+    {
+        UIManager.Instance.gameOverScreen.SetActive(true);
+        Debug.Log("Game Over");
     }
 }
