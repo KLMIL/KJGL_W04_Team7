@@ -59,6 +59,7 @@ public class DoorControl : MonoBehaviour
                 }
             }
         }
+        //Activate();
     }
 
     public void Activate()
