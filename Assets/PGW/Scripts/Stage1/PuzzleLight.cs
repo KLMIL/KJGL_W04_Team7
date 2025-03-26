@@ -20,7 +20,7 @@ public class PuzzleLight : MonoBehaviour
             material = renderer.material;
             originalColor = material.color;  // 원래 색상 저장
             // 생성 시 #11820A 색상으로 변경 (16진수 -> RGB 변환)
-            material.color = new Color32(17, 130, 10, 255); // #11820A
+            //material.color = new Color32(17, 130, 10, 255); // #11820A
         }
 
         objectLight = GetComponent<Light>();
