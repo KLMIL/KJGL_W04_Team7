@@ -1,12 +1,14 @@
 using UnityEngine;
 using System;
+using System.Collections;
 
 public class WallButtonOnce : MonoBehaviour
 {
     public GameObject targetObject; // 호출할 대상 오브젝트
     public string methodName = "Activate"; // 호출할 메소드 이름
     public float activationRange = 2f; // 버튼 활성화 범위 (거리)
-
+    public bool IsPlayerInRange { get; private set; } = false;
+    public bool IsButtonPressed { get; private set; } = false;
 
 
     void Update()
@@ -18,13 +20,16 @@ public class WallButtonOnce : MonoBehaviour
         if (closestPlayer != null)
         {
             if (Vector3.Distance(transform.position, closestPlayer.transform.position) <= activationRange)
-
             {
+                IsPlayerInRange = true;
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     PressButton();
+                    
                 }
+                
             }
+            else IsPlayerInRange = false; 
         }
 
     }
@@ -61,6 +66,7 @@ public class WallButtonOnce : MonoBehaviour
     {
         if (targetObject != null)
         {
+            //IsButtonPressed = true;
             targetObject.SendMessage(methodName, SendMessageOptions.DontRequireReceiver);
             Debug.Log($"{methodName} 메소드가 호출되었습니다!");
         }
@@ -68,11 +74,21 @@ public class WallButtonOnce : MonoBehaviour
         {
             Debug.LogWarning("타겟 오브젝트가 설정되지 않았습니다.");
         }
+        IsButtonPressed = true;
+        StartCoroutine(ResetButtonAfterDelay(1f));
     }
 
     void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, activationRange);
+    }
+
+
+    private IEnumerator ResetButtonAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); // 지정된 시간(1초) 대기
+        IsButtonPressed = false; // 버튼 상태 리셋
+        Debug.Log("버튼 상태가 리셋되었습니다.");
     }
 }
