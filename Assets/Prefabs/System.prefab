@@ -133,6 +133,8 @@ MonoBehaviour:
   player2Passed: 0
   isPlayer1Dead: 0
   isPlayer2Dead: 0
+  map: {fileID: 0}
+  mapPrefab: {fileID: 0}
 --- !u!1 &1969299674531056364
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,9 +166,9 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 681282842011552617}
   - {fileID: 8572775697234633378}
   - {fileID: 8931127878483029425}
-  - {fileID: 681282842011552617}
   - {fileID: 217372475178478853}
   m_Father: {fileID: 381818536348140370}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

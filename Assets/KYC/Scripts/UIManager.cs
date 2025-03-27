@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
 {
     public GameObject gameStartScreen;
     public GameObject gameOverScreen;
+    public GameObject howtoplayScreen;
     public TextMeshProUGUI stageText;
     public GameObject escapeSuccess;
     public static UIManager Instance { get; private set; }
@@ -19,16 +20,11 @@ public class UIManager : MonoBehaviour
             return;
         }
         Instance = this;
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+        howtoplayScreen.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ShowHowToPlay()
     {
-        
+        howtoplayScreen.SetActive(true);
     }
 }
