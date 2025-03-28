@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class Square_Button : MonoBehaviour
     public float width = 2f;  // X축 방향 너비 (큐브의 가로 크기)
     public float height = 2f; // Y축 방향 높이 (큐브의 세로 크기)
     public float depth = 2f;  // Z축 방향 깊이 (큐브의 깊이)
+    public bool IsButtonPressed { get; private set; } = false;
 
     void Update()
     {
@@ -21,7 +23,7 @@ public class Square_Button : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    InvokeMethod();
+                    ButtonListen();
                 }
             }
         }
@@ -68,7 +70,7 @@ public class Square_Button : MonoBehaviour
         return xDiff <= width / 2f && yDiff <= height / 2f && zDiff <= depth / 2f;
     }
 
-    private void InvokeMethod()
+    private void ButtonListen()
     {
         if (targetObjects != null)
         {
@@ -80,7 +82,9 @@ public class Square_Button : MonoBehaviour
                     Debug.Log($"{methodName} 메소드가 호출되었습니다!");
                 }
             }
-
+            IsButtonPressed = true;
+            
+            StartCoroutine(ResetButtonAfterDelay(1f)); // 코루틴 시작
         }
         else
         {
@@ -93,5 +97,12 @@ public class Square_Button : MonoBehaviour
         Gizmos.color = Color.yellow;
         // 큐브 형태로 기즈모 그리기
         Gizmos.DrawWireCube(transform.position, new Vector3(width, height, depth));
+    }
+
+    private IEnumerator ResetButtonAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); // 지정된 시간(1초) 대기
+        IsButtonPressed = false; // 버튼 상태 리셋
+        Debug.Log("버튼 상태가 리셋되었습니다.");
     }
 }
