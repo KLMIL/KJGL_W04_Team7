@@ -187,7 +187,7 @@ public class PlayerController : MonoBehaviour
         }
 
         rb.linearVelocity = new Vector3(moveVelocity.x, rb.linearVelocity.y, moveVelocity.z);
-        Debug.Log("Velocity Y after move: " + rb.linearVelocity.y);
+        //Debug.Log("Velocity Y after move: " + rb.linearVelocity.y);
 
         if (currentSpeed > 0.1f)
         {
