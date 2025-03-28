@@ -173,31 +173,21 @@ public class PlayerController : MonoBehaviour
 
         Vector3 moveVelocity = moveDirection * currentSpeed;
 
-        // 벽에 닿았을 때 속도 조정
         if (isTouchingWall)
         {
-            // 옵션 1: 수평 속도를 0으로
-            // moveVelocity = Vector3.zero;
-
-            // 옵션 2: 벽을 향한 속도 성분 제거 (더 자연스러움)
             RaycastHit hit;
             if (Physics.Raycast(transform.position, moveDirection, out hit, 1f) && hit.collider.CompareTag("Wall"))
             {
                 Debug.Log("Wall raycast Checked");
                 Vector3 wallNormal = hit.normal;
-                moveVelocity = Vector3.ProjectOnPlane(moveVelocity, wallNormal).normalized * currentSpeed;
-            }
-
-            if (!isGrounded) // 지면에 닿지 않은 경우에만
-            {
-                //rb.AddForce(Vector3.down * 0.5f, ForceMode.Impulse);
+                // 수평 속도를 0으로 설정 (대신 ProjectOnPlane 제거 가능)
+                moveVelocity = Vector3.zero;
+                Debug.Log("MoveVelocity reset to zero: " + moveVelocity);
             }
         }
 
         rb.linearVelocity = new Vector3(moveVelocity.x, rb.linearVelocity.y, moveVelocity.z);
-
-        //bodyAnimator.SetFloat("Speed", moveVelocity.magnitude);
-        //chestAnimator.SetFloat("Speed", moveVelocity.magnitude);
+        Debug.Log("Velocity Y after move: " + rb.linearVelocity.y);
 
         if (currentSpeed > 0.1f)
         {
