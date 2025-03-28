@@ -8,6 +8,8 @@ TagManager:
   - HorizontalButton
   - VerticalButton
   - Ground
+  - Wall
+  - WallButton
   layers:
   - Default
   - TransparentFX
