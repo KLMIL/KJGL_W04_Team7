@@ -5,6 +5,7 @@ public class CheckLight : MonoBehaviour
 {
     public List<GreenLightControl> lightControls = new List<GreenLightControl>(); // GreenLightControl 오브젝트 리스트
     private int[] correctSequence = { 0, 1, 2, 3 }; // 4개의 올바른 순서
+    [SerializeField]
     private List<int> playerSequence = new List<int>(); // 플레이어 입력 순서
     private int currentStep = 0;
     private bool[] previousLightStates; // 이전 프레임의 라이트 상태 저장
@@ -26,7 +27,7 @@ public class CheckLight : MonoBehaviour
 
         for (int i = 0; i < lightControls.Count; i++)
         {
-            bool currentState = lightControls[i].GetComponent<Light>().enabled;
+            bool currentState = lightControls[i].transform.GetChild(0).GetComponent<Light>().enabled;
             if (currentState && !previousLightStates[i]) // 꺼져있다가 켜진 경우
             {
                 HandleLightActivation(i);
