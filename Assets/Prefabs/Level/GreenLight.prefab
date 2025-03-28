@@ -130,6 +130,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5537002459466314724}
+  - component: {fileID: 5020582947805506705}
   m_Layer: 0
   m_Name: GreenLight
   m_TagString: Untagged
@@ -150,11 +151,24 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8157860420171094427}
   - {fileID: 4272830416450902846}
   - {fileID: 7596923816423557519}
-  - {fileID: 8157860420171094427}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &5020582947805506705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2421056378943864637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4152d55563415c64d9a0229df8ae48ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeDuration: 2
 --- !u!1 &7426573188464419157
 GameObject:
   m_ObjectHideFlags: 0
