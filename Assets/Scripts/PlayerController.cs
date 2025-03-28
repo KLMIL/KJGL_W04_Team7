@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public float runSpeed = 8f;
     public float jumpForce = 5f;
     public float rotationSpeed = 20f;
-
+    
     private float cameraVerticalAngle = 0f;
     private float interactRange = 3f;
 
@@ -24,25 +26,26 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool isDead = false;
     [SerializeField] private bool isInteracting; // 상호작용 중인지 추적
     [SerializeField] private bool isGrounded = true;
+    [SerializeField] private bool isTouchingWall = false;
 
 
     /* Inputs */
     private InputActions inputActions;
     private Vector2 moveInput;
     private Vector2 lookInput;
-
+    
 
     /* Components */
     private Rigidbody rb;
 
 
     /* Assign on inspector */
-
+    
     public Camera firstPersonCamera;
     public Animator bodyAnimator;
     public Animator chestAnimator;
     public Renderer chestRenderer;
-    //public Image targetDot;
+    public Image targetDot;
     public Transform handTransform;
 
     #endregion
@@ -57,7 +60,7 @@ public class PlayerController : MonoBehaviour
         AddInputActions();
 
         NullErrorLog();
-
+        
         activePlayer = this;
     }
 
@@ -68,7 +71,7 @@ public class PlayerController : MonoBehaviour
         if (firstPersonCamera == null) Debug.LogError("카메라가 연결되지 않았습니다!");
         if (chestRenderer == null) Debug.LogError("chestRenderer가 연결되지 않았습니다!");
         if (handTransform == null) Debug.LogError("handTransform이 연결되지 않았습니다!");
-        //if (targetDot == null) Debug.LogError("targetDot이 연결되지 않았습니다!");
+        if (targetDot == null) Debug.LogError("targetDot이 연결되지 않았습니다!");
     }
 
     private void AddInputActions()
@@ -81,9 +84,7 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Interact.performed += ctx => HandleInteract();
         inputActions.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Look.canceled += ctx => lookInput = Vector2.zero;
-        //inputActions.Player.Die.performed += ctx => isDead = true;
         inputActions.Player.Die.performed += ctx => HandleDie();
-        //inputActions.Player.Die.canceled += ctx => isDead = false;
     }
 
     private void OnDestroy()
@@ -96,9 +97,7 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Interact.performed -= ctx => HandleInteract();
         inputActions.Player.Look.performed -= ctx => lookInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Look.canceled -= ctx => lookInput = Vector2.zero;
-        //inputActions.Player.Die.performed -= ctx => isDead = true;
         inputActions.Player.Die.performed -= ctx => HandleDie();
-        //inputActions.Player.Die.canceled -= ctx => isDead = false;
     }
 
     void OnEnable() => inputActions.Player.Enable();
@@ -118,12 +117,12 @@ public class PlayerController : MonoBehaviour
                 Move();
                 Look();
                 UpdateAnimation();
-                //UpdateTargetDot();
+                UpdateTargetDot();
             }
             else
             {
                 UpdateAnimation(); // 상호작용 중에도 애니메이션은 업데이트
-                                   // UpdateTargetDot(); // 하얀 점도 유지
+                UpdateTargetDot(); // 하얀 점도 유지
             }
         }
     }
@@ -136,6 +135,15 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;
         }
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            Vector3 contactNormal = collision.contacts[0].normal;
+            if (Vector3.Dot(contactNormal, Vector3.up) < 0.5f)
+            {
+                Debug.Log("Wall detected");
+                isTouchingWall = true;
+            }
+        }
     }
 
     private void OnCollisionExit(Collision collision)
@@ -144,6 +152,10 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = false;
+        }
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            isTouchingWall = false;
         }
     }
 
@@ -160,10 +172,22 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDirection = (forwardMovement + sideMovement).normalized;
 
         Vector3 moveVelocity = moveDirection * currentSpeed;
-        rb.linearVelocity = new Vector3(moveVelocity.x, rb.linearVelocity.y, moveVelocity.z);
 
-        //bodyAnimator.SetFloat("Speed", moveVelocity.magnitude);
-        //chestAnimator.SetFloat("Speed", moveVelocity.magnitude);
+        if (isTouchingWall)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, moveDirection, out hit, 1f) && hit.collider.CompareTag("Wall"))
+            {
+                Debug.Log("Wall raycast Checked");
+                Vector3 wallNormal = hit.normal;
+                // 수평 속도를 0으로 설정 (대신 ProjectOnPlane 제거 가능)
+                moveVelocity = Vector3.zero;
+                Debug.Log("MoveVelocity reset to zero: " + moveVelocity);
+            }
+        }
+
+        rb.linearVelocity = new Vector3(moveVelocity.x, rb.linearVelocity.y, moveVelocity.z);
+        Debug.Log("Velocity Y after move: " + rb.linearVelocity.y);
 
         if (currentSpeed > 0.1f)
         {
@@ -260,21 +284,29 @@ public class PlayerController : MonoBehaviour
             {
                 PickUpItem(hit.collider.gameObject); // 아이템 줍기 (정지 없음)
             }
-            else if (hit.collider.CompareTag("HorizontalButton"))
+            //else if (hit.collider.CompareTag("HorizontalButton")) // WallButton
+            else if (hit.collider.CompareTag("WallButton")) // WallButton
             {
                 isInteracting = true; // 버튼 상호작용 시 정지 시작
                 bodyAnimator.SetTrigger("Press");
                 chestAnimator.SetTrigger("Press");
+                hit.collider.gameObject.GetComponent<WallButton>().PressButton(); // 추가
                 Debug.Log("Pressed HorizontalButton!");
+
+                // 여기서 버튼 누르는 함수 호출
+
                 Invoke(nameof(ResetInteracting), 0.5f); // 0.5초 후 해제
             }
-            else if (hit.collider.CompareTag("VerticalButton"))
-            {
+            else if (hit.collider.CompareTag("VerticalButton")) {
                 isInteracting = true; // 버튼 상호작용 시 정지 시작
                 bodyAnimator.SetTrigger("Punch");
                 chestAnimator.SetTrigger("Punch");
                 Debug.Log("Punched VerticalButton!");
                 Invoke(nameof(ResetInteracting), 0.5f); // 0.5초 후 해제
+            }
+            else
+            {
+                /* Do Nothing */
             }
         }
     }
@@ -322,29 +354,30 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    //private void UpdateTargetDot()
-    //{
-    //    Ray ray = firstPersonCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-    //    RaycastHit hit;
+    private void UpdateTargetDot()
+    {
+        Ray ray = firstPersonCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+        RaycastHit hit;
 
-    //    if (Physics.Raycast(ray, out hit, interactRange))
-    //    {
-    //        if (hit.collider.CompareTag("Pickup") ||
-    //            hit.collider.CompareTag("HorizontalButton") ||
-    //            hit.collider.CompareTag("VerticalButton"))
-    //        {
-    //            targetDot.enabled = true;
-    //        }
-    //        else
-    //        {
-    //            targetDot.enabled = false;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        targetDot.enabled = false;
-    //    }
-    //}
+        if (Physics.Raycast(ray, out hit, interactRange))
+        {
+            if (hit.collider.CompareTag("Pickup") ||
+                hit.collider.CompareTag("HorizontalButton") ||
+                hit.collider.CompareTag("WallButton") ||
+                hit.collider.CompareTag("VerticalButton"))
+            {
+                targetDot.enabled = true;
+            }
+            else
+            {
+                targetDot.enabled = false;
+            }
+        }
+        else
+        {
+            targetDot.enabled = false;
+        }
+    }
 
     #endregion
 }
