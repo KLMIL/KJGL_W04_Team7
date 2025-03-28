@@ -39,15 +39,6 @@ public class WallButtonDuration : MonoBehaviour
             }
         }
 
-        // 버튼 이동 로직
-        if (isPressed || isActive)
-        {
-            transform.position = Vector3.Lerp(transform.position, pressedPosition, Time.deltaTime * moveSpeed);
-        }
-        else
-        {
-            transform.position = Vector3.Lerp(transform.position, originalPosition, Time.deltaTime * moveSpeed);
-        }
 
         // 활성화된 상태에서 주기적으로 이벤트 호출
         if (isActive && Time.time - lastInvokeTime >= invokeInterval)

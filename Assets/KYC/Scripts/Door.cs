@@ -39,6 +39,12 @@ public class Door : MonoBehaviour
                 GameManager.Instance.PlusStageData();
                 GameManager.Instance.ShowStageData();
                 GameManager.Instance.ResetPassedFlags(); // 플래그 초기화
+
+                if(index == 6)
+                {
+                    UIManager.Instance.escapeSuccess.SetActive(true);
+                    Time.timeScale = 0f;
+                }
             }
         }
     }

@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool player1Passed;
     [SerializeField] private bool player2Passed;
     [SerializeField] public bool isPlayer1Dead;
-    [SerializeField] private bool isPlayer2Dead;
+    [SerializeField] public bool isPlayer2Dead;
     [SerializeField] private GameObject map;
     [SerializeField] private GameObject mapPrefab;
 
@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     }
     public void GameStart()
     {
+        UIManager.Instance.howtoplayScreen.SetActive(false);
         ActivatePlayer1();
         Time.timeScale = 1f;
         UIManager.Instance.gameStartScreen.SetActive(false);

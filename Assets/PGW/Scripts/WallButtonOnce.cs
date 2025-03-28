@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 using System.Collections;
 
 public class WallButtonOnce : MonoBehaviour
@@ -7,9 +6,9 @@ public class WallButtonOnce : MonoBehaviour
     public GameObject targetObject; // 호출할 대상 오브젝트
     public string methodName = "Activate"; // 호출할 메소드 이름
     public float activationRange = 2f; // 버튼 활성화 범위 (거리)
+
     public bool IsPlayerInRange { get; private set; } = false;
     public bool IsButtonPressed { get; private set; } = false;
-
 
     void Update()
     {
@@ -22,23 +21,23 @@ public class WallButtonOnce : MonoBehaviour
             if (Vector3.Distance(transform.position, closestPlayer.transform.position) <= activationRange)
             {
                 IsPlayerInRange = true;
-                if (Input.GetKeyDown(KeyCode.E))
+                if (Input.GetKeyDown(KeyCode.E) && !IsButtonPressed) // 버튼이 이미 눌리지 않았을 때만 실행
                 {
                     PressButton();
-                    
                 }
-                
             }
-            else IsPlayerInRange = false; 
+            else
+            {
+                IsPlayerInRange = false;
+            }
         }
-
     }
 
     // 가장 가까운 플레이어 찾기
     private GameObject FindClosestPlayer()
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player"); // 모든 "Player" 태그 오브젝트 찾기 
-       
+
         if (players.Length == 0)
         {
             Debug.LogWarning("태그가 'Player'인 오브젝트가 없습니다.");
@@ -61,12 +60,10 @@ public class WallButtonOnce : MonoBehaviour
         return closest;
     }
 
-
     public void PressButton()
     {
         if (targetObject != null)
         {
-            //IsButtonPressed = true;
             targetObject.SendMessage(methodName, SendMessageOptions.DontRequireReceiver);
             Debug.Log($"{methodName} 메소드가 호출되었습니다!");
         }
@@ -75,7 +72,7 @@ public class WallButtonOnce : MonoBehaviour
             Debug.LogWarning("타겟 오브젝트가 설정되지 않았습니다.");
         }
         IsButtonPressed = true;
-        StartCoroutine(ResetButtonAfterDelay(1f));
+        StartCoroutine(ResetButtonAfterDelay(1f)); // 코루틴 시작
     }
 
     void OnDrawGizmos()
@@ -83,7 +80,6 @@ public class WallButtonOnce : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, activationRange);
     }
-
 
     private IEnumerator ResetButtonAfterDelay(float delay)
     {
