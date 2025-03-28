@@ -34,6 +34,10 @@ public class GameManager : MonoBehaviour
     }
     public void GameStart()
     {
+        
+    }
+    void Start()
+    {
         UIManager.Instance.howtoplayScreen.SetActive(false);
         ActivatePlayer1();
         Time.timeScale = 1f;
@@ -46,9 +50,6 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         player1Passed = false;
         player2Passed = false;
-    }
-    void Start()
-    {
         Time.timeScale = 0f;
         UIManager.Instance.gameOverScreen.SetActive(false);
         UIManager.Instance.gameStartScreen.SetActive(true);
@@ -63,7 +64,7 @@ public class GameManager : MonoBehaviour
         {
             SwitchPlayer();
         }
-        if ((isPlayer1Dead || isPlayer2Dead) && Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             RespawnPlayers(); // R 키로 테스트용 리스폰
         }
