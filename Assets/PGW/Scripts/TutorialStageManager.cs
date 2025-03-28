@@ -1,48 +1,107 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections;
 
 public class TutorialStageManager : MonoBehaviour
 {
-    [SerializeField] private GameObject[] buttons;
-    [SerializeField] private GameObject[] lights;
-    [SerializeField] private GameObject door;
+    [SerializeField] private GameObject[] buttons; // 총 6개 버튼 (0, 1: 벽 이동, 2~5: 퍼즐)
+    [SerializeField] private PuzzleLight[] puzzleLights; // 퍼즐용 라이트 4개 (인덱스 2~5에 대응)
+    [SerializeField] private GameObject[] doors; // 퍼즐 완료 시 열릴 문 (크기 2)
+    [SerializeField] private GameObject[] walls; // 버튼 0, 1이 제어할 벽 (크기 2)
 
-    private List<int> activationOrder; // 실제 활성화 순서를 기록
-    private int[] correctOrder = { 2, 1, 0, 3 }; // 올바른 순서 (예시, 필요에 따라 수정)
-    private bool isPuzzleComplete = false; // 퍼즐 완료 여부
+    private List<int> activationOrder;
+    private int[] correctOrder = { 2, 1, 0, 3 }; // 퍼즐 순서
+    private bool isPuzzleComplete = false;
 
     void Start()
     {
-        activationOrder = new List<int>(); // 순서 리스트 초기화
-    }
-
-    public void ButtonListen(GameObject button)
-    {
-        if (isPuzzleComplete) return; // 퍼즐 완료 시 더 이상 작동하지 않음
-
-        // buttons 배열에서 button의 인덱스 찾기
-        int index = System.Array.IndexOf(buttons, button);
-
-        // 인덱스가 유효하고 lights 배열에 해당 인덱스가 존재하면 처리
-        if (index != -1 && index < lights.Length && lights[index] != null)
+        activationOrder = new List<int>();
+        if (buttons.Length != 6 || puzzleLights.Length != 4 || walls.Length != 2 || doors.Length != 2)
         {
-            // 이미 활성화된 경우 중복 체크 방지
-            if (!activationOrder.Contains(index))
+            Debug.LogError("buttons는 6개, puzzleLights는 4개, walls는 2개, doors는 2개여야 합니다!");
+        }
+        // puzzleLights 초기화 확인
+        for (int i = 0; i < puzzleLights.Length; i++)
+        {
+            if (puzzleLights[i] == null)
             {
-                lights[index].SendMessage("Activate", SendMessageOptions.DontRequireReceiver);
-                activationOrder.Add(index); // 순서에 추가
-                CheckOrder(); // 순서 확인
+                Debug.LogError($"puzzleLights[{i}]가 null입니다!");
+            }
+        }
+        // doors 초기화 확인
+        for (int i = 0; i < doors.Length; i++)
+        {
+            if (doors[i] == null)
+            {
+                Debug.LogError($"doors[{i}]가 null입니다!");
             }
         }
     }
 
-    // 순서가 맞는지 확인
+    public void ButtonListen(GameObject button)
+    {
+        if (isPuzzleComplete) return;
+
+        int index = System.Array.IndexOf(buttons, button);
+        Debug.Log($"Button Index: {index}");
+
+        if (index == -1) return;
+
+        // 인덱스 0, 1: 벽 제어
+        if (index == 0)
+        {
+            if (walls[0] != null)
+            {
+                walls[0].SendMessage("Activate", SendMessageOptions.DontRequireReceiver);
+                Debug.Log("Wall 1 이동 시도");
+            }
+            else
+            {
+                Debug.LogError("walls[0]이 null입니다!");
+            }
+        }
+        else if (index == 1)
+        {
+            if (walls[1] != null)
+            {
+                walls[1].SendMessage("Activate", SendMessageOptions.DontRequireReceiver);
+                Debug.Log("Wall 2 이동 시도");
+            }
+            else
+            {
+                Debug.LogError("walls[1]이 null입니다!");
+            }
+        }
+        // 인덱스 2~5: 퍼즐 순서 체크
+        else if (index >= 2 && index < buttons.Length && index - 2 < puzzleLights.Length)
+        {
+            int lightIndex = index - 2;
+            if (puzzleLights[lightIndex] != null)
+            {
+                if (!activationOrder.Contains(lightIndex))
+                {
+                    puzzleLights[lightIndex].SendMessage("Activate", SendMessageOptions.DontRequireReceiver);
+                    Debug.Log($"puzzleLights[{lightIndex}] 활성화 시도");
+                    activationOrder.Add(lightIndex);
+                    CheckOrder();
+                }
+                else
+                {
+                    Debug.Log($"puzzleLights[{lightIndex}]는 이미 활성화됨");
+                }
+            }
+            else
+            {
+                Debug.LogError($"puzzleLights[{lightIndex}]가 null입니다!");
+            }
+        }
+    }
+
     private void CheckOrder()
     {
         Debug.Log($"현재 순서: {string.Join(", ", activationOrder)}");
 
-        // 모든 버튼이 눌렸는지 확인
         if (activationOrder.Count == correctOrder.Length)
         {
             bool isCorrect = activationOrder.SequenceEqual(correctOrder);
@@ -50,15 +109,19 @@ public class TutorialStageManager : MonoBehaviour
             {
                 Debug.Log("순서가 맞습니다! 퍼즐 완료!");
                 isPuzzleComplete = true;
-
-                // 모든 문 열기 (선택적)
-                if (door != null)
+                // 모든 문 열기
+                foreach (var door in doors)
                 {
-                    door.SendMessage("Activate", SendMessageOptions.DontRequireReceiver);
+                    if (door != null)
+                    {
+                        door.SendMessage("Activate", SendMessageOptions.DontRequireReceiver);
+                        Debug.Log($"{door.name} 열림 시도");
+                    }
+                    else
+                    {
+                        Debug.LogError("doors 배열에 null 요소가 있습니다!");
+                    }
                 }
-
-                // 3초 후 리셋 (선택적)
-                StartCoroutine(ResetAfterDelay(3f));
             }
             else
             {
@@ -68,22 +131,21 @@ public class TutorialStageManager : MonoBehaviour
         }
     }
 
-    // 퍼즐 초기화
     private void ResetPuzzle()
     {
         activationOrder.Clear();
-        foreach (var light in lights)
+        foreach (var light in puzzleLights)
         {
             if (light != null)
             {
-                light.SendMessage("Deactivate", SendMessageOptions.DontRequireReceiver); // 비활성화 메소드 필요
+                light.SendMessage("Deactivate", SendMessageOptions.DontRequireReceiver);
+                Debug.Log($"{light.name} 비활성화 시도");
             }
         }
         isPuzzleComplete = false;
         Debug.Log("퍼즐이 초기화되었습니다.");
     }
 
-    // 지정된 시간 후 리셋하는 코루틴
     private System.Collections.IEnumerator ResetAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);

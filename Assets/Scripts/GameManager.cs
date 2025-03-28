@@ -39,6 +39,15 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
+        
+        Time.timeScale = 0f;
+        UIManager.Instance.gameOverScreen.SetActive(false);
+        UIManager.Instance.gameStartScreen.SetActive(true);
+        UIManager.Instance.escapeSuccess.SetActive(false);
+        UIManager.Instance.stageText.text = "";
+
+
+
         UIManager.Instance.howtoplayScreen.SetActive(false);
         ActivatePlayer1();
         Time.timeScale = 1f;
@@ -52,11 +61,6 @@ public class GameManager : MonoBehaviour
         player1Passed = false;
         player2Passed = false;
         SetCameras(); // 게임 시작 시 카메라 설정
-        Time.timeScale = 0f;
-        UIManager.Instance.gameOverScreen.SetActive(false);
-        UIManager.Instance.gameStartScreen.SetActive(true);
-        UIManager.Instance.escapeSuccess.SetActive(false);
-        UIManager.Instance.stageText.text = "";
     }
 
     void Update()
