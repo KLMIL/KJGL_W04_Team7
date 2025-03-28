@@ -23,7 +23,7 @@ public class GreenLightControl : MonoBehaviour
                     material.color = new Color32(17, 130, 10, 255); // #11820A
                 }*/
 
-        objectLight = transform.GetChild(0).GetComponent<Light>();
+        objectLight = GetComponent<Light>();
         if (objectLight != null)
         {
             objectLight.enabled = false;     // 처음에는 꺼진 상태
@@ -54,7 +54,7 @@ public class GreenLightControl : MonoBehaviour
         //Activate();
     }
 
-    public void ButtonListen()
+    public void Activate()
     {
         if (!isActive)
         {
