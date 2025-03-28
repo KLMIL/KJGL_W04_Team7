@@ -4759,17 +4759,19 @@ MonoBehaviour:
   walkSpeed: 5
   runSpeed: 8
   jumpForce: 5
-  rotationSpeed: 10
-  firstPersonCamera: {fileID: 6357613171991675049}
+  rotationSpeed: 15
   speed: 0
   isRunning: 0
+  isDead: 0
+  isInteracting: 0
+  isGrounded: 1
+  isTouchingWall: 0
+  firstPersonCamera: {fileID: 6357613171991675049}
   bodyAnimator: {fileID: 8840609380632957865}
   chestAnimator: {fileID: 3927837008798577912}
-  tmp_die: 0
   chestRenderer: {fileID: 7166925114225841325}
-  handTransform: {fileID: 1269661082446834114}
   targetDot: {fileID: 0}
-  isInteracting: 0
+  handTransform: {fileID: 1269661082446834114}
 --- !u!136 &8793688563685802829
 CapsuleCollider:
   m_ObjectHideFlags: 0
