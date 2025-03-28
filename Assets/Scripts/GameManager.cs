@@ -99,6 +99,7 @@ public class GameManager : MonoBehaviour
 
     void ActivatePlayer1()
     {
+        player2.GetComponent<PlayerController>().DisablePlayer();
         PlayerController.activePlayer = player1.GetComponent<PlayerController>();
         isPlayer1Active = true;
         // Player1에 "Player" 태그 설정, Player2에서 태그 제거
@@ -108,6 +109,7 @@ public class GameManager : MonoBehaviour
 
     void ActivatePlayer2()
     {
+        player1.GetComponent<PlayerController>().DisablePlayer();
         PlayerController.activePlayer = player2.GetComponent<PlayerController>();
         isPlayer1Active = false;
         player2.tag = "Player";
