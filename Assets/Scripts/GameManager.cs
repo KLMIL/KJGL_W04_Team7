@@ -21,7 +21,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject mapPrefab;
 
     private bool isPlayer1Active = true;
-
+    private Camera mainCamera; // 주 화면 카메라
+    private Camera subCamera;  // 보조 화면 카메라
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         player1Passed = false;
         player2Passed = false;
+        SetCameras(); // 게임 시작 시 카메라 설정
     }
     void Start()
     {
@@ -62,6 +64,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             SwitchPlayer();
+            SetCameras(); // Tab 키를 누를 때마다 카메라 재설정
         }
         if ((isPlayer1Dead || isPlayer2Dead) && Input.GetKeyDown(KeyCode.R))
         {
@@ -97,8 +100,6 @@ public class GameManager : MonoBehaviour
     void ActivatePlayer1()
     {
         PlayerController.activePlayer = player1.GetComponent<PlayerController>();
-        camera1.enabled = true;
-        camera2.enabled = false;
         isPlayer1Active = true;
         // Player1에 "Player" 태그 설정, Player2에서 태그 제거
         player1.tag = "Player";
@@ -108,8 +109,6 @@ public class GameManager : MonoBehaviour
     void ActivatePlayer2()
     {
         PlayerController.activePlayer = player2.GetComponent<PlayerController>();
-        camera1.enabled = false;
-        camera2.enabled = true;
         isPlayer1Active = false;
         player2.tag = "Player";
         player1.tag = "Untagged"; // 또는 다른 태그로 변경
@@ -213,5 +212,32 @@ public class GameManager : MonoBehaviour
     {
         UIManager.Instance.gameOverScreen.SetActive(true);
         Debug.Log("Game Over");
+    }
+    // 카메라를 주 화면과 보조 화면으로 설정하는 함수
+    void SetCameras()
+    {
+        // 활성화된 플레이어에 따라 주 화면과 보조 화면 결정
+        if (isPlayer1Active)
+        {
+            mainCamera = camera1;
+            subCamera = camera2;
+        }
+        else
+        {
+            mainCamera = camera2;
+            subCamera = camera1;
+        }
+
+        // 두 카메라 모두 활성화
+        mainCamera.enabled = true;
+        subCamera.enabled = true;
+
+        // 주 화면 카메라: 화면 전체
+        mainCamera.rect = new Rect(0, 0, 1, 1);
+        mainCamera.depth = 0; // 주 화면이 위에 렌더링되도록
+
+        // 보조 화면 카메라: 오른쪽 아래 작은 창
+        subCamera.rect = new Rect(0.68f, 0.1f, 0.30f, 0.30f);
+        subCamera.depth = 1; // 보조 화면이 아래에 렌더링되도록
     }
 }
