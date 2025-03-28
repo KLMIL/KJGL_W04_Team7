@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +6,7 @@ public class WallButtonOnceList : MonoBehaviour
     public List<GameObject> targetObjects; // 호출할 대상 오브젝트
     public string methodName = "Activate"; // 호출할 메소드 이름
     public float activationRange = 2f; // 버튼 활성화 범위 (거리)
-    
+
 
 
     void Update()
@@ -65,7 +64,7 @@ public class WallButtonOnceList : MonoBehaviour
                     Debug.Log($"{methodName} 메소드가 호출되었습니다!");
                 }
             }
-            
+
         }
         else
         {

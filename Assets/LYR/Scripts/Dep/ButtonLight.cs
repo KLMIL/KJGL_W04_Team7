@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ButtonLight : MonoBehaviour
+public class Button : MonoBehaviour
 {
     public WallButtonOnce button; // 참조할 WallButtonOnce 스크립트
     public Light targetLight; // 제어할 Light 컴포넌트

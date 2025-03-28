@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Door : MonoBehaviour
 {
@@ -23,7 +22,7 @@ public class Door : MonoBehaviour
                 GameManager.Instance.SetPlayer1Passed(true);
                 Debug.Log("player1 passed and set temp spawn point: " + (transform.position + spawnPointExtra));
             }
-            else if(index >= GameManager.Instance.StageData)
+            else if (index >= GameManager.Instance.StageData)
             {
                 // Player2가 통과하면 임시 스폰 포인트 설정
                 GameManager.Instance.SetTempPlayer2SpawnPoint(transform.position + spawnPointExtra);
@@ -40,7 +39,7 @@ public class Door : MonoBehaviour
                 GameManager.Instance.ShowStageData();
                 GameManager.Instance.ResetPassedFlags(); // 플래그 초기화
 
-                if(index == 6)
+                if (index == 6)
                 {
                     UIManager.Instance.escapeSuccess.SetActive(true);
                     Time.timeScale = 0f;

@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
             RespawnPlayers(); // R 키로 테스트용 리스폰
         }
 
-        if(player1.GetComponent<Transform>().position.y < -10f)
+        if (player1.GetComponent<Transform>().position.y < -10f)
         {
             isPlayer1Dead = true;
         }
@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
         {
             isPlayer2Dead = true;
         }
-        if(isPlayer1Dead || isPlayer2Dead)
+        if (isPlayer1Dead || isPlayer2Dead)
         {
             EndGame();
         }
