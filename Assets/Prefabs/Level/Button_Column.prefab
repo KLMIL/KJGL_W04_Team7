@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetObject: {fileID: 0}
-  methodName: Activate
+  methodName: ButtonListen
 --- !u!114 &2237982309819452066
 MonoBehaviour:
   m_ObjectHideFlags: 0

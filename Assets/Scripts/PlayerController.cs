@@ -187,7 +187,7 @@ public class PlayerController : MonoBehaviour
         }
 
         rb.linearVelocity = new Vector3(moveVelocity.x, rb.linearVelocity.y, moveVelocity.z);
-        Debug.Log("Velocity Y after move: " + rb.linearVelocity.y);
+        //Debug.Log("Velocity Y after move: " + rb.linearVelocity.y);
 
         if (currentSpeed > 0.1f)
         {
@@ -216,6 +216,31 @@ public class PlayerController : MonoBehaviour
         //{
         //    HandleDie();
         //}
+    }
+
+    public void DisablePlayer()
+    {
+        Debug.Log("Is it Called?1");
+
+        // 애니메이션 강제로 Idle 설정
+        bodyAnimator.Play("Idle", 0, 0f);
+        chestAnimator.Play("Idle", 0, 0f);
+
+        // Speed 파라미터 초기화
+        bodyAnimator.SetFloat("Speed", 0f);
+        chestAnimator.SetFloat("Speed", 0f);
+
+        // 트리거 초기화 (필요 시)
+        bodyAnimator.ResetTrigger("Jump");
+        chestAnimator.ResetTrigger("Jump");
+        // 다른 트리거도 초기화 필요 시 추가
+
+        rb.linearVelocity = Vector3.zero;
+        isInteracting = false;
+
+        Debug.Log("Is it Called?2");
+        Debug.Log("Body Animator State: " + bodyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
+        Debug.Log("Chest Animator State: " + chestAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
     }
 
     #endregion
