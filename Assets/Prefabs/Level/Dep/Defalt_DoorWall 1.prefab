@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6921610093696541315}
   m_Layer: 0
-  m_Name: Defalt_DoorWall
+  m_Name: Defalt_DoorWall 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
