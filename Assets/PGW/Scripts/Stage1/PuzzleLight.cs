@@ -10,7 +10,7 @@ public class PuzzleLight : MonoBehaviour
 
     public Action<bool, GameObject> onSetActive; // SetActive 호출 시 발생하는 이벤트
 
-    
+
     void Start()
     {
         // 머터리얼과 라이트 컴포넌트 가져오기

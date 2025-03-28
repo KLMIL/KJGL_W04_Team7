@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public float runSpeed = 8f;
     public float jumpForce = 5f;
     public float rotationSpeed = 20f;
-    
+
     private float cameraVerticalAngle = 0f;
     private float interactRange = 3f;
 
@@ -32,14 +30,14 @@ public class PlayerController : MonoBehaviour
     private InputActions inputActions;
     private Vector2 moveInput;
     private Vector2 lookInput;
-    
+
 
     /* Components */
     private Rigidbody rb;
 
 
     /* Assign on inspector */
-    
+
     public Camera firstPersonCamera;
     public Animator bodyAnimator;
     public Animator chestAnimator;
@@ -59,7 +57,7 @@ public class PlayerController : MonoBehaviour
         AddInputActions();
 
         NullErrorLog();
-        
+
         activePlayer = this;
     }
 
@@ -125,7 +123,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 UpdateAnimation(); // 상호작용 중에도 애니메이션은 업데이트
-               // UpdateTargetDot(); // 하얀 점도 유지
+                                   // UpdateTargetDot(); // 하얀 점도 유지
             }
         }
     }

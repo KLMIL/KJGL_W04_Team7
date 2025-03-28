@@ -14,14 +14,14 @@ public class GreenLightControl : MonoBehaviour
     void Start()
     {
         // 머터리얼과 라이트 컴포넌트 가져오기
-/*        Renderer renderer = GetComponent<Renderer>();
-        if (renderer != null)
-        {
-            material = renderer.material;
-            originalColor = material.color;  // 원래 색상 저장
-            // 생성 시 #11820A 색상으로 변경 (16진수 -> RGB 변환)
-            material.color = new Color32(17, 130, 10, 255); // #11820A
-        }*/
+        /*        Renderer renderer = GetComponent<Renderer>();
+                if (renderer != null)
+                {
+                    material = renderer.material;
+                    originalColor = material.color;  // 원래 색상 저장
+                    // 생성 시 #11820A 색상으로 변경 (16진수 -> RGB 변환)
+                    material.color = new Color32(17, 130, 10, 255); // #11820A
+                }*/
 
         objectLight = GetComponent<Light>();
         if (objectLight != null)
@@ -39,10 +39,10 @@ public class GreenLightControl : MonoBehaviour
             // 지정된 시간이 지나면 원래 상태로 복구
             if (activeTimer >= activeDuration)
             {
-/*                if (material != null)
-                {
-                    material.color = new Color32(17, 130, 10, 255); // #11820A로 복구
-                }*/
+                /*                if (material != null)
+                                {
+                                    material.color = new Color32(17, 130, 10, 255); // #11820A로 복구
+                                }*/
                 if (objectLight != null)
                 {
                     objectLight.enabled = false;    // 라이트 끄기
@@ -61,11 +61,11 @@ public class GreenLightControl : MonoBehaviour
             isActive = true;
             activeTimer = 0f;
 
-/*            if (material != null)
-            {
-                // 원래 색상으로 복원
-                material.color = originalColor;
-            }*/
+            /*            if (material != null)
+                        {
+                            // 원래 색상으로 복원
+                            material.color = originalColor;
+                        }*/
 
             if (objectLight != null)
             {

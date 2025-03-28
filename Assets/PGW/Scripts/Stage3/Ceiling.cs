@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Ceiling : MonoBehaviour
 {
-    public PlayerController playerController;   
+    public PlayerController playerController;
 
     private void OnTriggerEnter(Collider other)
     {

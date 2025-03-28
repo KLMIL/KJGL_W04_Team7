@@ -1,6 +1,4 @@
 using UnityEngine;
-using System.Collections;
-using System.Linq; // Any 메서드 사용을 위해 추가
 
 public class ClosingWall : MonoBehaviour
 {

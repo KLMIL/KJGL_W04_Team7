@@ -65,7 +65,7 @@ public class ClosingWall_1 : MonoBehaviour
                         playerController.HandleDie();
                     }
                     closeTimer = 0f;
-                    
+
                 }
             }
         }
