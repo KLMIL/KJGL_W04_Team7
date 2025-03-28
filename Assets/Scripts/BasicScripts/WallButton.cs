@@ -4,7 +4,7 @@ using UnityEngine;
 public class WallButton : MonoBehaviour
 {
     public GameObject targetObject; // 호출할 대상 오브젝트
-    public string methodName = "Activate"; // 호출할 메소드 이름
+    public string methodName = "ButtonListen"; // 호출할 메소드 이름
 
     public bool IsButtonPressed { get; private set; } = false;
 
@@ -12,7 +12,7 @@ public class WallButton : MonoBehaviour
     {
         if (targetObject != null)
         {
-            targetObject.SendMessage(methodName, SendMessageOptions.DontRequireReceiver);
+            targetObject.SendMessage(methodName, this.gameObject, SendMessageOptions.DontRequireReceiver);
             Debug.Log($"{methodName} 메소드가 호출되었습니다!");
         }
         else
