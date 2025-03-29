@@ -176,7 +176,7 @@ public class PlayerController : MonoBehaviour
         if (isTouchingWall)
         {
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, moveDirection, out hit, 1f) && hit.collider.CompareTag("Wall"))
+            if (Physics.Raycast(transform.position, moveDirection, out hit, 5f) && hit.collider.CompareTag("Wall"))
             {
                 Debug.Log("Wall raycast Checked");
                 Vector3 wallNormal = hit.normal;
@@ -211,11 +211,6 @@ public class PlayerController : MonoBehaviour
         speed = rb.linearVelocity.magnitude;
         bodyAnimator.SetFloat("Speed", speed);
         chestAnimator.SetFloat("Speed", speed);
-
-        //if (isDead)
-        //{
-        //    HandleDie();
-        //}
     }
 
     public void DisablePlayer()
@@ -317,9 +312,6 @@ public class PlayerController : MonoBehaviour
                 chestAnimator.SetTrigger("Press");
                 hit.collider.gameObject.GetComponent<WallButton>().PressButton(); // 추가
                 Debug.Log("Pressed HorizontalButton!");
-
-                // 여기서 버튼 누르는 함수 호출
-
                 Invoke(nameof(ResetInteracting), 0.5f); // 0.5초 후 해제
             }
             else if (hit.collider.CompareTag("VerticalButton")) {
