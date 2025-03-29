@@ -10,6 +10,7 @@ TagManager:
   - Ground
   - Wall
   - WallButton
+  - StageStartPoint
   layers:
   - Default
   - TransparentFX
