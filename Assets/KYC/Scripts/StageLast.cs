@@ -15,7 +15,14 @@ public class StageLast : MonoBehaviour
         new int[] { 1, 2, 3, 9, 16, 23 },   // 버튼 5
         new int[] { 24 },                   // 버튼 6
         new int[] { 25 },                   // 버튼 7
-        new int[] { 26 }                    // 버튼 8
+        new int[] { 26 },                    // 버튼 8
+        new int[] { 44,48,49,50,47 },                    // 버튼 9
+        new int[] { 48,49,45,38,28 },                    // 버튼 10
+        new int[] { 29,33,32,36,34,35,37,41,42,39,45,44,47 },                    // 버튼 11
+        new int[] { 34,35,39,37,44,48,46,49 },                    // 버튼 12
+        new int[] { 34,35,37,39,41,42,45 },                    // 버튼 13
+        new int[] { 37,38,42,43,39,36,33,29 },                      // 버튼 14
+        new int[] {}
     };
 
     void Start()
@@ -26,7 +33,7 @@ public class StageLast : MonoBehaviour
             if (cubeController == null)
                 Debug.LogError("CubeArrayController가 설정되지 않았습니다.");
         }
-        if (buttons == null || buttons.Length != 9)
+        if (buttons == null || buttons.Length != 16)
         {
             Debug.LogError("buttons는 9개여야 합니다!");
         }
@@ -41,9 +48,9 @@ public class StageLast : MonoBehaviour
         if (cubeController == null || buttons == null) return;
 
         int buttonIndex = System.Array.IndexOf(buttons, button);
-        if (buttonIndex != -1 && buttonIndex < cubeIndicesToTurnOn.Length) // 0~8까지 처리
+        if (buttonIndex != -1 && buttonIndex < cubeIndicesToTurnOn.Length)
         {
-            if (buttonIndex == 0)
+            if (buttonIndex == 0 || buttonIndex == 15)
             {
                 ResetAllCubes();
                 Debug.Log("첫 번째 버튼이 눌려 모든 큐브가 꺼졌습니다.");
@@ -51,18 +58,8 @@ public class StageLast : MonoBehaviour
             else
             {
                 int[] cubesToTurnOn = cubeIndicesToTurnOn[buttonIndex];
-                if (cubesToTurnOn.Length == 1 && cubesToTurnOn[0] >= 24 && cubesToTurnOn[0] <= 26)
-                {
-                    // 특수 큐브(24~26) 처리
-                    cubeController.ToggleSpecialCube(cubesToTurnOn[0]);
-                    Debug.Log($"버튼 {buttonIndex} ({buttons[buttonIndex].name})이 눌려 특수 큐브 {cubesToTurnOn[0]} 토글");
-                }
-                else
-                {
-                    // 일반 큐브(0~23) 처리
-                    cubeController.SetCubeState(cubesToTurnOn);
-                    Debug.Log($"버튼 {buttonIndex} ({buttons[buttonIndex].name})이 눌려 {cubesToTurnOn.Length}개의 큐브 상태가 토글되었습니다.");
-                }
+                cubeController.ToggleCubes(cubesToTurnOn);
+                Debug.Log($"버튼 {buttonIndex} ({buttons[buttonIndex].name})이 눌려 {cubesToTurnOn.Length}개의 큐브 상태가 토글되었습니다.");
             }
         }
         else
@@ -70,6 +67,7 @@ public class StageLast : MonoBehaviour
             Debug.LogWarning($"알 수 없는 버튼: {button.name}");
         }
     }
+
 
     private void ResetAllCubes()
     {
