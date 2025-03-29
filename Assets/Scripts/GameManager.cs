@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        
+
         Time.timeScale = 0f;
         UIManager.Instance.gameOverScreen.SetActive(false);
         UIManager.Instance.gameStartScreen.SetActive(true);
@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
 
 
 
-        
+
     }
 
     void Update()
@@ -78,11 +78,11 @@ public class GameManager : MonoBehaviour
 
         if (player1.GetComponent<Transform>().position.y < -10f)
         {
-            isPlayer1Dead = true;
+            SetPlayer1Dead(true);
         }
         if (player2.GetComponent<Transform>().position.y < -10f)
         {
-            isPlayer2Dead = true;
+            SetPlayer2Dead(true);
         }
         if (isPlayer1Dead || isPlayer2Dead)
         {
@@ -207,13 +207,23 @@ public class GameManager : MonoBehaviour
         player1Passed = false;
         player2Passed = false;
     }
+    public void SetPlayerDead(bool value)
+    {
+        isPlayer1Dead = value;
+        isPlayer2Dead = value;
+        player1.GetComponent<PlayerController>().HandleDie();
+        player2.GetComponent<PlayerController>().HandleDie();
+    }
+
     public void SetPlayer1Dead(bool value)
     {
         isPlayer1Dead = value;
+        player1.GetComponent<PlayerController>().HandleDie();
     }
     public void SetPlayer2Dead(bool value)
     {
         isPlayer2Dead = value;
+        player2.GetComponent<PlayerController>().HandleDie();
     }
     private void EndGame()
     {

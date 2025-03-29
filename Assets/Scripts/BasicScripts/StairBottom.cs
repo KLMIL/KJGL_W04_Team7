@@ -10,6 +10,9 @@ public class StairBottom : MonoBehaviour
     private bool isMoving = false;
     private Coroutine currentCoroutine;
 
+    [SerializeField] private float moveSpeed = 30f; // 올라오는 속도 (조정 가능)
+    [SerializeField] private float stayDuration = 0.1f; // 올라간 후 유지 시간 (조정 가능)
+
     void Start()
     {
         originalPosition = transform.position;
@@ -43,7 +46,14 @@ public class StairBottom : MonoBehaviour
     private IEnumerator MoveUpAndStay()
     {
         isMoving = true;
-        transform.position = targetPosition;
+
+        // 부드럽게 올라감
+        while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+        transform.position = targetPosition; // 정확히 목표 위치에 도달
 
         // 하나라도 눌려 있는 동안 유지
         while (bottomButtons.Any(b => b != null && b.IsPressed()))
@@ -51,7 +61,14 @@ public class StairBottom : MonoBehaviour
             yield return null;
         }
 
-        transform.position = originalPosition;
+        // 부드럽게 내려감
+        while (Vector3.Distance(transform.position, originalPosition) > 0.01f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, originalPosition, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+        transform.position = originalPosition; // 정확히 원래 위치에 도달
+
         isMoving = false;
         currentCoroutine = null;
     }
