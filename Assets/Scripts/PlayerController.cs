@@ -250,15 +250,10 @@ public class PlayerController : MonoBehaviour
 
     public void HandleDie()
     {
-        if (this == activePlayer)
-        {
-            isDead = true;
-            GameManager.Instance.isPlayer1Dead = true;
-            GameManager.Instance.isPlayer2Dead = true;
-            bodyAnimator.SetTrigger("Die");
-            chestAnimator.SetTrigger("Die");
-            chestRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
-        }
+        isDead = true;
+        bodyAnimator.SetTrigger("Die");
+        chestAnimator.SetTrigger("Die");
+        chestRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
     }
 
     public void HandleAlive()
