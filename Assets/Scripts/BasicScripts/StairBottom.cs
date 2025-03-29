@@ -7,11 +7,9 @@ public class StairBottom : MonoBehaviour
     private Vector3 originalPosition;
     private Vector3 targetPosition;
     public BottomButton[] bottomButtons; // BottomButton 배열
-    private bool isMoving = false;
     private Coroutine currentCoroutine;
 
-    [SerializeField] private float moveSpeed = 30f; // 올라오는 속도 (조정 가능)
-    [SerializeField] private float stayDuration = 0.1f; // 올라간 후 유지 시간 (조정 가능)
+    [SerializeField] private float moveSpeed = 30f; // 이동 속도
 
     void Start()
     {
@@ -23,7 +21,7 @@ public class StairBottom : MonoBehaviour
         {
             if (button != null)
             {
-                button.onPressedStateChanged += HandleButtonState; // 상태 변경 시 호출
+                button.onPressedStateChanged += HandleButtonState;
             }
         }
 
@@ -33,43 +31,56 @@ public class StairBottom : MonoBehaviour
         }
     }
 
-    private void HandleButtonState(bool pressed, GameObject buttonObject)
+    public void HandleButtonState(bool pressed, GameObject buttonObject)
     {
-        // buttonObject가 bottomButtons에 포함되어 있는지 확인
-        if (pressed && !isMoving && bottomButtons.Any(b => b != null && b.gameObject == buttonObject))
+        if (bottomButtons.Any(b => b != null && b.gameObject == buttonObject))
         {
-            if (currentCoroutine != null) StopCoroutine(currentCoroutine);
-            currentCoroutine = StartCoroutine(MoveUpAndStay());
+            // 버튼이 눌렸을 때 길을 올림
+            if (pressed && currentCoroutine == null)
+            {
+                if (currentCoroutine != null) StopCoroutine(currentCoroutine);
+                currentCoroutine = StartCoroutine(MoveUp());
+                Debug.Log($"{gameObject.name}: 버튼 눌림 - 길 올라감 시작");
+            }
+            // 모든 버튼이 해제되었을 때 길을 내림
+            else if (!pressed && !bottomButtons.Any(b => b != null && b.IsPressed()))
+            {
+                if (currentCoroutine != null) StopCoroutine(currentCoroutine);
+                currentCoroutine = StartCoroutine(MoveDown());
+                Debug.Log($"{gameObject.name}: 모든 버튼 해제 - 길 내려감 시작");
+            }
         }
     }
 
-    private IEnumerator MoveUpAndStay()
+    private IEnumerator MoveUp()
     {
-        isMoving = true;
-
-        // 부드럽게 올라감
         while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
             yield return null;
         }
-        transform.position = targetPosition; // 정확히 목표 위치에 도달
+        transform.position = targetPosition;
+        Debug.Log($"{gameObject.name}: 길이 목표 위치에 도달");
 
-        // 하나라도 눌려 있는 동안 유지
+        // 버튼이 눌려 있는 동안 유지
         while (bottomButtons.Any(b => b != null && b.IsPressed()))
         {
             yield return null;
         }
 
-        // 부드럽게 내려감
+        // 버튼이 모두 해제되면 내려감
+        currentCoroutine = StartCoroutine(MoveDown());
+    }
+
+    private IEnumerator MoveDown()
+    {
         while (Vector3.Distance(transform.position, originalPosition) > 0.01f)
         {
             transform.position = Vector3.MoveTowards(transform.position, originalPosition, moveSpeed * Time.deltaTime);
             yield return null;
         }
-        transform.position = originalPosition; // 정확히 원래 위치에 도달
-
-        isMoving = false;
+        transform.position = originalPosition;
+        Debug.Log($"{gameObject.name}: 길이 원래 위치로 복귀");
         currentCoroutine = null;
     }
 }
