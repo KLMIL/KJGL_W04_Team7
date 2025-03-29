@@ -58,4 +58,15 @@ public class MovingWall : MonoBehaviour
             openProgress = 0f;
         }
     }
+
+
+    public void DeActivate()
+    {
+        if (isOpened)
+        {
+            leftWall.transform.position = leftOriginalPos;
+            rightWall.transform.position = rightOriginalPos;
+            isOpened = false;
+        }
+    }
 }
