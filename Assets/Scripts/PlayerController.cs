@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     private float cameraVerticalAngle = 0f;
     private float interactRange = 3f;
 
+    private bool isCursorHintOffer = false; // TEST Hint Test
+
     private GameObject heldItem;
 
     [SerializeField] private float speed;
@@ -45,8 +47,10 @@ public class PlayerController : MonoBehaviour
     public Animator bodyAnimator;
     public Animator chestAnimator;
     public Renderer chestRenderer;
-    public Image targetDot;
+    public Image cursorDot;
+    public RawImage cursorHint; // TEST Hint Test
     public Transform handTransform;
+
 
     #endregion
 
@@ -71,7 +75,7 @@ public class PlayerController : MonoBehaviour
         if (firstPersonCamera == null) Debug.LogError("카메라가 연결되지 않았습니다!");
         if (chestRenderer == null) Debug.LogError("chestRenderer가 연결되지 않았습니다!");
         if (handTransform == null) Debug.LogError("handTransform이 연결되지 않았습니다!");
-        if (targetDot == null) Debug.LogError("targetDot이 연결되지 않았습니다!");
+        if (cursorDot == null) Debug.LogError("cursorDot이 연결되지 않았습니다!");
     }
 
     private void AddInputActions()
@@ -85,6 +89,7 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Look.canceled += ctx => lookInput = Vector2.zero;
         inputActions.Player.Die.performed += ctx => HandleDie();
+        inputActions.Player.Hint.performed += ctx => isCursorHintOffer = !isCursorHintOffer; // TEST Hint Test
     }
 
     private void OnDestroy()
@@ -98,6 +103,7 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Look.performed -= ctx => lookInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Look.canceled -= ctx => lookInput = Vector2.zero;
         inputActions.Player.Die.performed -= ctx => HandleDie();
+        inputActions.Player.Hint.performed -= ctx => isCursorHintOffer = !isCursorHintOffer; // TEST Hint Test
     }
 
     void OnEnable() => inputActions.Player.Enable();
@@ -117,12 +123,12 @@ public class PlayerController : MonoBehaviour
                 Move();
                 Look();
                 UpdateAnimation();
-                UpdateTargetDot();
+                UpdatecursorDot();
             }
             else
             {
                 UpdateAnimation(); // 상호작용 중에도 애니메이션은 업데이트
-                UpdateTargetDot(); // 하얀 점도 유지
+                UpdatecursorDot(); // 하얀 점도 유지
             }
         }
     }
@@ -248,8 +254,8 @@ public class PlayerController : MonoBehaviour
         if (this == activePlayer)
         {
             isDead = true;
-            GameManager.Instance.isPlayer1Dead = true;
-            GameManager.Instance.isPlayer2Dead = true;
+            //GameManager.Instance.isPlayer1Dead = true;
+            //GameManager.Instance.isPlayer2Dead = true;
             bodyAnimator.SetTrigger("Die");
             chestAnimator.SetTrigger("Die");
             chestRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
@@ -287,7 +293,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInteract()
     {
-        if (this != activePlayer || isDead) return;
+        if (this != activePlayer || isDead || isInteracting) return;
 
         if (heldItem != null)
         {
@@ -312,15 +318,15 @@ public class PlayerController : MonoBehaviour
                 chestAnimator.SetTrigger("Press");
                 hit.collider.gameObject.GetComponent<WallButton>().PressButton(); // 추가
                 Debug.Log("Pressed HorizontalButton!");
-                Invoke(nameof(ResetInteracting), 0.5f); // 0.5초 후 해제
+                Invoke(nameof(ResetInteracting), 0.2f); // 0.5초 후 해제
             }
-            else if (hit.collider.CompareTag("VerticalButton")) {
-                isInteracting = true; // 버튼 상호작용 시 정지 시작
-                bodyAnimator.SetTrigger("Punch");
-                chestAnimator.SetTrigger("Punch");
-                Debug.Log("Punched VerticalButton!");
-                Invoke(nameof(ResetInteracting), 0.5f); // 0.5초 후 해제
-            }
+            //else if (hit.collider.CompareTag("VerticalButton")) {
+            //    isInteracting = true; // 버튼 상호작용 시 정지 시작
+            //    bodyAnimator.SetTrigger("Punch");
+            //    chestAnimator.SetTrigger("Punch");
+            //    Debug.Log("Punched VerticalButton!");
+            //    Invoke(nameof(ResetInteracting), 0.5f); // 0.5초 후 해제
+            //}
             else
             {
                 /* Do Nothing */
@@ -371,7 +377,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private void UpdateTargetDot()
+    private void UpdatecursorDot()
     {
         Ray ray = firstPersonCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
         RaycastHit hit;
@@ -379,20 +385,32 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(ray, out hit, interactRange))
         {
             if (hit.collider.CompareTag("Pickup") ||
-                hit.collider.CompareTag("HorizontalButton") ||
-                hit.collider.CompareTag("WallButton") ||
-                hit.collider.CompareTag("VerticalButton"))
+                //hit.collider.CompareTag("HorizontalButton") ||
+                hit.collider.CompareTag("WallButton")
+                //hit.collider.CompareTag("VerticalButton"))
+                )
             {
-                targetDot.enabled = true;
+                //cursorDot.enabled = true;
+                cursorDot.color = Color.green;
+
+                if (isCursorHintOffer)
+                {
+                    cursorHint.enabled = true; // TEST Hint Test
+                }
+
             }
             else
             {
-                targetDot.enabled = false;
+                //cursorDot.enabled = false;
+                cursorDot.color = Color.white;
+                cursorHint.enabled = false; // TEST Hint Test
             }
         }
         else
         {
-            targetDot.enabled = false;
+            //cursorDot.enabled = false;
+            cursorDot.color = Color.white;
+            cursorHint.enabled = false; // TEST Hint Test
         }
     }
 
