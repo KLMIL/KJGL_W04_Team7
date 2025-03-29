@@ -17,6 +17,7 @@ public class CubeArrayController : MonoBehaviour
     public Material material4;
     public Material material5;
     public Material material6;
+    public Material material7;
 
     public CubeData[] cubes = new CubeData[51];
 
@@ -48,47 +49,32 @@ public class CubeArrayController : MonoBehaviour
         }
     }
 
-    public void SetCubeState(int[] indicesToTurnOn)
+    public void ToggleCubes(int[] indicesToTurnOn) // 이름 간소화
     {
         foreach (int index in indicesToTurnOn)
         {
-            if (index >= 0 && index < 24)
+            if (index >= 0 && index < cubes.Length)
             {
                 CubeData cubeData = cubes[index];
-                cubeData.isMaterial1 = !cubeData.isMaterial1;
+                if (index >= 27) // 27~51
+                {
+                    cubeData.specialMaterialState = (cubeData.specialMaterialState + 1) % 5;
+                }
+                else if (index >= 24) // 24~26
+                {
+                    cubeData.specialMaterialState = (cubeData.specialMaterialState + 1) % 4;
+                }
+                else // 0~23
+                {
+                    cubeData.isMaterial1 = !cubeData.isMaterial1;
+                }
                 UpdateCubeMaterial(cubeData);
-                Debug.Log($"인덱스 {index} 상태 변경: isMaterial1 = {cubeData.isMaterial1}");
+                Debug.Log($"인덱스 {index} 상태 변경: specialMaterialState = {cubeData.specialMaterialState}, isMaterial1 = {cubeData.isMaterial1}");
             }
-        }
-    }
-
-    // 특수 큐브 개별 토글
-    public void ToggleSpecialCube(int cubeIndex)
-    {
-        if (cubeIndex >= 24 && cubeIndex <= 26)
-        {
-            CubeData cubeData = cubes[cubeIndex];
-            cubeData.specialMaterialState = (cubeData.specialMaterialState + 1) % 4;
-            UpdateCubeMaterial(cubeData);
-            Debug.Log($"인덱스 {cubeIndex} 상태 변경: specialMaterialState = {cubeData.specialMaterialState}");
-        }
-        else
-        {
-            Debug.LogWarning($"특수 큐브 인덱스가 아님: {cubeIndex}");
-        }
-    }
-    public void ToggleLastCube(int cubeIndex)
-    {
-        if(cubeIndex >= 27)
-        {
-            CubeData cubeData = cubes[cubeIndex];
-            cubeData.specialMaterialState = (cubeData.specialMaterialState + 1) % 5;
-            UpdateCubeMaterial(cubeData);
-            Debug.Log($"인덱스 {cubeIndex} 상태 변경: specialMaterialState = {cubeData.specialMaterialState}");
-        }
-        else
-        {
-            Debug.LogWarning($"최종 큐브 인덱스가 아님: {cubeIndex}");
+            else
+            {
+                Debug.LogWarning($"유효하지 않은 인덱스: {index}");
+            }
         }
     }
 
@@ -122,7 +108,7 @@ public class CubeArrayController : MonoBehaviour
                 Debug.Log($"인덱스 {cubeData.index}에 머터리얼 적용: {newMaterial.name}");
             }
         }
-        if (cubeData.index >= 27) // 특수 큐브
+        else if (cubeData.index >= 27) // 특수 큐브
         {
             Material newMaterial = null;
             switch (cubeData.specialMaterialState)
