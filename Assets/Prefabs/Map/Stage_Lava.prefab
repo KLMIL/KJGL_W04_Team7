@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 2144274446301933941}
   - component: {fileID: 4233129552898235314}
   m_Layer: 0
-  m_Name: Stage_Lava 1
+  m_Name: Stage_Lava
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
