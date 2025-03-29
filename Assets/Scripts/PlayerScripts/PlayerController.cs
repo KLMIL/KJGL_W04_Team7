@@ -52,6 +52,10 @@ public class PlayerController : MonoBehaviour
     public Transform handTransform;
 
 
+    /* Component in same Object */
+    private PlayerCameraShake cameraShake;
+
+
     #endregion
 
 
@@ -66,6 +70,11 @@ public class PlayerController : MonoBehaviour
         NullErrorLog();
         
         activePlayer = this;
+    }
+
+    private void Start()
+    {
+        cameraShake = gameObject.GetComponent<PlayerCameraShake>();
     }
 
     private void NullErrorLog()
@@ -116,6 +125,15 @@ public class PlayerController : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            ShakeCameraDoorOpen();
+        }
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            ShakeCameraWallOpen();
+        }
+
         if (this == activePlayer) // 상호작용 중이 아니면 카메라 회전
         {
             if (!isInteracting && !isDead)
@@ -412,6 +430,20 @@ public class PlayerController : MonoBehaviour
             cursorDot.color = Color.white;
             cursorHint.enabled = false; // TEST Hint Test
         }
+    }
+
+    #endregion
+
+
+    #region Camera
+    public void ShakeCameraDoorOpen()
+    {
+        cameraShake.ShakeCamera(0.2f, 0.02f, 1.0f);
+    }
+
+    public void ShakeCameraWallOpen()
+    {
+        cameraShake.ShakeCamera(0.5f, 0.1f, 1.0f);
     }
 
     #endregion

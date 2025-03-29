@@ -4789,6 +4789,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2926170961703744985}
   - component: {fileID: 5681509990643470440}
+  - component: {fileID: 7064336215888635251}
   - component: {fileID: 8793688563685802829}
   - component: {fileID: 6305477821661013091}
   m_Layer: 0
@@ -4846,6 +4847,22 @@ MonoBehaviour:
   cursorDot: {fileID: 7137006278007572029}
   cursorHint: {fileID: 8000728312531202770}
   handTransform: {fileID: 1269661082446834114}
+--- !u!114 &7064336215888635251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9090678697765513192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07dedab38197e1e449d66702a252af7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeDuration: 0.5
+  shakeMagnitude: 0.1
+  dampingSpeed: 1
+  playerController: {fileID: 2926170961703744985}
 --- !u!136 &8793688563685802829
 CapsuleCollider:
   m_ObjectHideFlags: 0
