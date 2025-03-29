@@ -25,4 +25,8 @@ public class UIManager : MonoBehaviour
     {
         howtoplayScreen.SetActive(true);
     }
+    public void ShowSuccessScreen()
+    {
+        escapeSuccess.SetActive(true);
+    }
 }

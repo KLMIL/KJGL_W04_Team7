@@ -17,6 +17,7 @@ public class CubeArrayController : MonoBehaviour
     public Material material4;
     public Material material5;
     public Material material6;
+    public Material material7;
 
     public CubeData[] cubes = new CubeData[51];
 
