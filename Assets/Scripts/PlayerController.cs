@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
@@ -15,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public float runSpeed = 8f;
     public float jumpForce = 5f;
     public float rotationSpeed = 20f;
-    
+
     private float cameraVerticalAngle = 0f;
     private float interactRange = 3f;
 
@@ -33,14 +32,14 @@ public class PlayerController : MonoBehaviour
     private InputActions inputActions;
     private Vector2 moveInput;
     private Vector2 lookInput;
-    
+
 
     /* Components */
     private Rigidbody rb;
 
 
     /* Assign on inspector */
-    
+
     public Camera firstPersonCamera;
     public Animator bodyAnimator;
     public Animator chestAnimator;
@@ -60,7 +59,7 @@ public class PlayerController : MonoBehaviour
         AddInputActions();
 
         NullErrorLog();
-        
+
         activePlayer = this;
     }
 
@@ -322,7 +321,8 @@ public class PlayerController : MonoBehaviour
 
                 Invoke(nameof(ResetInteracting), 0.5f); // 0.5초 후 해제
             }
-            else if (hit.collider.CompareTag("VerticalButton")) {
+            else if (hit.collider.CompareTag("VerticalButton"))
+            {
                 isInteracting = true; // 버튼 상호작용 시 정지 시작
                 bodyAnimator.SetTrigger("Punch");
                 chestAnimator.SetTrigger("Punch");
