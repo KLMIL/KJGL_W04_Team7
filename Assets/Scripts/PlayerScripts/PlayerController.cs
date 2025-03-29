@@ -98,7 +98,6 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Look.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Look.canceled += ctx => lookInput = Vector2.zero;
         inputActions.Player.Die.performed += ctx => HandleDie();
-        inputActions.Player.Hint.performed += ctx => isCursorHintOffer = !isCursorHintOffer; // TEST Hint Test
     }
 
     private void OnDestroy()
@@ -112,7 +111,6 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Look.performed -= ctx => lookInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Look.canceled -= ctx => lookInput = Vector2.zero;
         inputActions.Player.Die.performed -= ctx => HandleDie();
-        inputActions.Player.Hint.performed -= ctx => isCursorHintOffer = !isCursorHintOffer; // TEST Hint Test
     }
 
     void OnEnable() => inputActions.Player.Enable();
@@ -125,14 +123,18 @@ public class PlayerController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            ShakeCameraDoorOpen();
-        }
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            ShakeCameraWallOpen();
-        }
+        //if (Input.GetKeyDown(KeyCode.B))
+        //{
+        //    ShakeCameraDoorOpen();
+        //}
+        //if (Input.GetKeyDown(KeyCode.N))
+        //{
+        //    ShakeCameraWallOpen();
+        //}
+        //if (Input.GetKeyDown(KeyCode.H))
+        //{
+        //    isCursorHintOffer = !isCursorHintOffer;
+        //}
 
         if (this == activePlayer) // 상호작용 중이 아니면 카메라 회전
         {
@@ -257,9 +259,17 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         isInteracting = false;
 
+        cursorDot.enabled = false;
+        cursorHint.enabled = false;
+
         Debug.Log("Is it Called?2");
         Debug.Log("Body Animator State: " + bodyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
         Debug.Log("Chest Animator State: " + chestAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
+    }
+
+    public void ActivePlayerUI()
+    {
+        cursorDot.enabled = true;
     }
 
     #endregion
@@ -411,7 +421,8 @@ public class PlayerController : MonoBehaviour
                 //cursorDot.enabled = true;
                 cursorDot.color = Color.green;
 
-                if (isCursorHintOffer)
+                //if (isCursorHintOffer)
+                if (GameManager.Instance.StageData == 1) // 좀 하드코딩임. GameManager 통해서 직접 얻음.
                 {
                     cursorHint.enabled = true; // TEST Hint Test
                 }
