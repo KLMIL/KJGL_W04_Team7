@@ -11,9 +11,9 @@ public class ButtonEmission : MonoBehaviour
 
     void Start()
     {
-       //wallButtonScript = GetComponentInParent<WallButton>();
+        //wallButtonScript = GetComponentInParent<WallButton>();
 
-       wallButtonScript = GetComponent<WallButton>();
+        wallButtonScript = GetComponent<WallButton>();
 
         //머터리얼 있는지 확인하고 없으면 오브젝트의 머터리얼 가져오기
         if (material == null)
