@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.ProBuilder.Shapes;
 
 public class ColorWallManager : MonoBehaviour
 {
@@ -7,7 +8,8 @@ public class ColorWallManager : MonoBehaviour
     public GameObject[] wallRed;    //Red 버튼 눌리면 열리는 벽
     public GameObject[] wallBlue;   //Blue 버튼 눌리면 열리는 벽
     public GameObject[] wallGreen;  //Green 버튼 눌리면 열리는 벽
-    public DoorControl[] doors;     //문 버튼 눌리면 열릴 문
+    public GameObject[] upperfloor;
+    public GameObject[] doors;     //문 버튼 눌리면 열릴 문
 
     ButtonShapeRed[] redShapeScript;
     ButtonShapeBlue[] blueShapeScript;
@@ -52,7 +54,7 @@ public class ColorWallManager : MonoBehaviour
                 foreach (GameObject redWall in wallRed)
                 {
                     redWall.SendMessage("Activate", SendMessageOptions.DontRequireReceiver);
-                    Debug.Log("빨간 문 열림");
+                    //Debug.Log("빨간 문 열림");
                 }
 
                 break;
@@ -68,7 +70,7 @@ public class ColorWallManager : MonoBehaviour
                 {
 
                     wall.SendMessage("Activate", SendMessageOptions.DontRequireReceiver);
-                    Debug.Log("파란 문 열림");
+                    //Debug.Log("파란 문 열림");
                 }
 
                 break;
@@ -81,16 +83,23 @@ public class ColorWallManager : MonoBehaviour
                 {
                     wall.GetComponentInChildren<ButtonShapeGreen>().gameObject.SetActive(false);
                     wall.SendMessage("Activate", SendMessageOptions.DontRequireReceiver);
-                    Debug.Log("초록 문 열림");
+                    //Debug.Log("초록 문 열림");
                 }
                 break;
 
             case 3:     //올라오는 발판
 
+                foreach (GameObject floor in upperfloor)
+                {
+                    floor.SendMessage("MoveUpAndStay", SendMessageOptions.DontRequireReceiver);
+                }
                 break;
 
             case 4:     //문 열리게 하는 버튼
-
+                foreach (GameObject door in doors)
+                {
+                    door.SendMessage("Activate", SendMessageOptions.DontRequireReceiver);
+                }
                 break;
 
         }
@@ -105,7 +114,7 @@ public class ColorWallManager : MonoBehaviour
         foreach (GameObject wall in wallRed)
         {
             wall.SendMessage("DeActivate", SendMessageOptions.DontRequireReceiver);
-            Debug.Log("빨강 문 닫힘");
+            //Debug.Log("빨강 문 닫힘");
         }
     }
     void BlueDoorClose()
@@ -117,7 +126,7 @@ public class ColorWallManager : MonoBehaviour
         foreach (GameObject wall in wallBlue)
         {
             wall.SendMessage("DeActivate", SendMessageOptions.DontRequireReceiver);
-            Debug.Log("파랑 문 닫힘");
+            //Debug.Log("파랑 문 닫힘");
         }
     }
 
@@ -131,7 +140,7 @@ public class ColorWallManager : MonoBehaviour
         foreach (GameObject wall in wallGreen)
         {
             wall.SendMessage("DeActivate", SendMessageOptions.DontRequireReceiver);
-            Debug.Log("초록 문 닫힘");
+            //Debug.Log("초록 문 닫힘");
         }
     }
 }
