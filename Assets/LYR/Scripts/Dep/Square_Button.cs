@@ -83,7 +83,7 @@ public class Square_Button : MonoBehaviour
                 }
             }
             IsButtonPressed = true;
-            
+
             StartCoroutine(ResetButtonAfterDelay(1f)); // 코루틴 시작
         }
         else

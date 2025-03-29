@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        
+
         Time.timeScale = 0f;
         UIManager.Instance.gameOverScreen.SetActive(false);
         UIManager.Instance.gameStartScreen.SetActive(true);
@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
 
 
 
-        
+
     }
 
     void Update()
