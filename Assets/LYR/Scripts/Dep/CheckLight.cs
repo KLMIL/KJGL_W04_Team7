@@ -4,7 +4,7 @@ using UnityEngine;
 public class CheckLight : MonoBehaviour
 {
     public List<GreenLightControl> lightControls = new List<GreenLightControl>(); // GreenLightControl 오브젝트 리스트
-    private int[] correctSequence = { 0, 1, 2, 3 }; // 4개의 올바른 순서
+    private int[] correctSequence = { 0,4,1,3 }; // 4개의 올바른 순서
     [SerializeField]
     private List<int> playerSequence = new List<int>(); // 플레이어 입력 순서
     private int currentStep = 0;
