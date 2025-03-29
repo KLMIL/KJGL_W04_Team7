@@ -10,6 +10,7 @@ public class ColorWallManager : MonoBehaviour
     public GameObject[] wallGreen;  //Green 버튼 눌리면 열리는 벽
     public GameObject[] upperfloor;
     public GameObject[] doors;     //문 버튼 눌리면 열릴 문
+    
 
     ButtonShapeRed[] redShapeScript;
     ButtonShapeBlue[] blueShapeScript;
@@ -89,10 +90,10 @@ public class ColorWallManager : MonoBehaviour
 
             case 3:     //올라오는 발판
 
-                foreach (GameObject floor in upperfloor)
+/*                foreach (GameObject floor in upperfloor)
                 {
-                    floor.SendMessage("MoveUpAndStay", SendMessageOptions.DontRequireReceiver);
-                }
+                    floor.SendMessage("HandleButtonState", SendMessageOptions.DontRequireReceiver);
+                }*/
                 break;
 
             case 4:     //문 열리게 하는 버튼
@@ -143,4 +144,6 @@ public class ColorWallManager : MonoBehaviour
             //Debug.Log("초록 문 닫힘");
         }
     }
+
+
 }
