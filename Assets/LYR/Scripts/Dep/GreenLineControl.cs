@@ -83,8 +83,8 @@ public class GreenLineControl : MonoBehaviour
         if (lightsToCheck == null || lightsToCheck.Count != 2) return false;
 
         // 각 오브젝트에서 Light 컴포넌트 가져오기
-        Light light1 = lightsToCheck[0].GetComponent<Light>();
-        Light light2 = lightsToCheck[1].GetComponent<Light>();
+        Light light1 = lightsToCheck[0].GetComponentInChildren<Light>();
+        Light light2 = lightsToCheck[1].GetComponentInChildren<Light>();
 
         // Light 컴포넌트가 없거나 비활성화 상태면 false 반환
         if (light1 == null || light2 == null) return false;

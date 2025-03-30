@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
@@ -15,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public float runSpeed = 8f;
     public float jumpForce = 5f;
     public float rotationSpeed = 20f;
-    
+
     private float cameraVerticalAngle = 0f;
     private float interactRange = 3f;
 
@@ -35,14 +34,14 @@ public class PlayerController : MonoBehaviour
     private InputActions inputActions;
     private Vector2 moveInput;
     private Vector2 lookInput;
-    
+
 
     /* Components */
     private Rigidbody rb;
 
 
     /* Assign on inspector */
-    
+
     public Camera firstPersonCamera;
     public Animator bodyAnimator;
     public Animator chestAnimator;
@@ -68,7 +67,7 @@ public class PlayerController : MonoBehaviour
         AddInputActions();
 
         NullErrorLog();
-        
+
         activePlayer = this;
     }
 

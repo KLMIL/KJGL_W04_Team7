@@ -133,7 +133,7 @@ public class CubeArrayController : MonoBehaviour
         else // 기본 큐브
         {
             renderer.material = cubeData.isMaterial1 ? material1 : material2;
-            Debug.Log($"인덱스 {cubeData.index}에 기본 머터리얼 적용: {(cubeData.isMaterial1 ? material1.name : material2.name)}");   
+            Debug.Log($"인덱스 {cubeData.index}에 기본 머터리얼 적용: {(cubeData.isMaterial1 ? material1.name : material2.name)}");
         }
     }
 
