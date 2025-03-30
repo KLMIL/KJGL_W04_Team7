@@ -41,7 +41,7 @@ public class BottomButton : MonoBehaviour
         // Exit 후 일정 시간이 지나면 해제 상태 확정
         if (!isPressed && Time.time - lastExitTime > exitDelay)
         {
-            Debug.Log($"{gameObject.name}: 해제 상태 확정");
+            //Debug.Log($"{gameObject.name}: 해제 상태 확정");
         }
     }
 

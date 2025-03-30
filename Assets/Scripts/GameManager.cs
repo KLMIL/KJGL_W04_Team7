@@ -166,7 +166,7 @@ public class GameManager : MonoBehaviour
         // 새 맵 생성
         if (mapPrefab != null)
         {
-            map = Instantiate(mapPrefab, new Vector3(94.362f, 7.14f, 162.228f), Quaternion.identity);
+            map = Instantiate(mapPrefab, new Vector3(50.6794662f, 0, 245.476822f), Quaternion.identity);
             Debug.Log("새 맵이 생성되었습니다.");
         }
         else
@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
         ResetPassedFlags(); // 리스폰 시 플래그 초기화
     }
 
-
+    
 
     public void SetPlayer1Passed(bool value)
     {

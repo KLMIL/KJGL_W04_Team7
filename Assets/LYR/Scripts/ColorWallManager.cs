@@ -48,10 +48,10 @@ public class ColorWallManager : MonoBehaviour
 
                 BlueDoorClose();
                 GreenDoorClose();
-                foreach (var script in redShapeScript)
-                {
-                    script.gameObject.SetActive(false);
-                }
+                //foreach (var script in redShapeScript)
+                //{
+                //    script.gameObject.SetActive(false);
+                //}
                 foreach (GameObject redWall in wallRed)
                 {
                     redWall.SendMessage("Activate", SendMessageOptions.DontRequireReceiver);
@@ -63,10 +63,10 @@ public class ColorWallManager : MonoBehaviour
             case 1:     //Blue Wall
                 RedDoorClose();
                 GreenDoorClose();
-                foreach (var script in blueShapeScript)
-                {
-                    script.gameObject.SetActive(false);
-                }
+                //foreach (var script in blueShapeScript)
+                //{
+                //    script.gameObject.SetActive(false);
+                //}
                 foreach (GameObject wall in wallBlue)
                 {
 
@@ -82,7 +82,7 @@ public class ColorWallManager : MonoBehaviour
 
                 foreach (GameObject wall in wallGreen)
                 {
-                    wall.GetComponentInChildren<ButtonShapeGreen>().gameObject.SetActive(false);
+                    //wall.GetComponentInChildren<ButtonShapeGreen>().gameObject.SetActive(false);
                     wall.SendMessage("Activate", SendMessageOptions.DontRequireReceiver);
                     //Debug.Log("초록 문 열림");
                 }
@@ -108,10 +108,10 @@ public class ColorWallManager : MonoBehaviour
 
     void RedDoorClose()
     {
-        foreach (var script in redShapeScript)
-        {
-            script.gameObject.SetActive(true);
-        }
+        //foreach (var script in redShapeScript)
+        //{
+        //    script.gameObject.SetActive(true);
+        //}
         foreach (GameObject wall in wallRed)
         {
             wall.SendMessage("DeActivate", SendMessageOptions.DontRequireReceiver);
@@ -120,10 +120,10 @@ public class ColorWallManager : MonoBehaviour
     }
     void BlueDoorClose()
     {
-        foreach (var script in blueShapeScript)
-        {
-            script.gameObject.SetActive(true);
-        }
+        //foreach (var script in blueShapeScript)
+        //{
+        //    script.gameObject.SetActive(true);
+        //}
         foreach (GameObject wall in wallBlue)
         {
             wall.SendMessage("DeActivate", SendMessageOptions.DontRequireReceiver);
@@ -133,10 +133,10 @@ public class ColorWallManager : MonoBehaviour
 
     void GreenDoorClose()
     {
-        foreach (var script in greenShapeScript)
-        {
-            script.gameObject.SetActive(true);
-        }
+        //foreach (var script in greenShapeScript)
+        //{
+        //    script.gameObject.SetActive(true);
+        //}
 
         foreach (GameObject wall in wallGreen)
         {
