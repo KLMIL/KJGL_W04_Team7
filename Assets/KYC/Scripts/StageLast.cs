@@ -7,8 +7,8 @@ public class StageLast : MonoBehaviour
     [SerializeField] private GameObject endDoor;
     [SerializeField] private GameObject endBlock2;
     [SerializeField] private GameObject endDoor2;
-     public GameObject player1; // 첫 번째 플레이어 (Inspector에서 설정)
-     public GameObject player2;
+    public GameObject player1; // 첫 번째 플레이어 (Inspector에서 설정)
+    public GameObject player2;
     public bool gameComplete = false;
     [SerializeField] private GameObject[] buttons;
     [SerializeField]
@@ -58,7 +58,7 @@ public class StageLast : MonoBehaviour
         if (buttonIndex != -1 && buttonIndex < cubeIndicesToTurnOn.Length)
         {
             if (buttonIndex == 0 || buttonIndex == 15)
-            { 
+            {
                 ResetAllCubes();
                 Debug.Log("첫 번째 버튼이 눌려 모든 큐브가 꺼졌습니다.");
             }
@@ -168,7 +168,7 @@ public class StageLast : MonoBehaviour
                     Debug.LogError("endDoor에 Renderer가 없거나 material5가 설정되지 않았어!");
                 }
             }
-            if(endDoor2 != null)
+            if (endDoor2 != null)
             {
                 Renderer doorRenderer = endDoor2.GetComponent<Renderer>();
                 if (doorRenderer != null && cubeController.material7 != null)

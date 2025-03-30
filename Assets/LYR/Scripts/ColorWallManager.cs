@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.ProBuilder.Shapes;
 
 public class ColorWallManager : MonoBehaviour
 {
@@ -10,7 +8,7 @@ public class ColorWallManager : MonoBehaviour
     public GameObject[] wallGreen;  //Green 버튼 눌리면 열리는 벽
     public GameObject[] upperfloor;
     public GameObject[] doors;     //문 버튼 눌리면 열릴 문
-    
+
 
     ButtonShapeRed[] redShapeScript;
     ButtonShapeBlue[] blueShapeScript;
@@ -90,10 +88,10 @@ public class ColorWallManager : MonoBehaviour
 
             case 3:     //올라오는 발판
 
-/*                foreach (GameObject floor in upperfloor)
-                {
-                    floor.SendMessage("HandleButtonState", SendMessageOptions.DontRequireReceiver);
-                }*/
+                /*                foreach (GameObject floor in upperfloor)
+                                {
+                                    floor.SendMessage("HandleButtonState", SendMessageOptions.DontRequireReceiver);
+                                }*/
                 break;
 
             case 4:     //문 열리게 하는 버튼
