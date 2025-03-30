@@ -5,11 +5,11 @@ public class StairBottom : MonoBehaviour
 {
     private Vector3 originalPosition;
     private Vector3 targetPosition;
-    [SerializeField] private BottomButton bottomButton; // 단일 BottomButton
-    private Coroutine currentCoroutine;
+    [SerializeField] protected BottomButton bottomButton; // 단일 BottomButton
+    protected Coroutine currentCoroutine;
     private Rigidbody rb;
 
-    [SerializeField] private float moveSpeed = 30f; // 이동 속도
+    [SerializeField] protected float moveSpeed = 30f; // 이동 속도
 
     void Start()
     {
@@ -37,7 +37,7 @@ public class StairBottom : MonoBehaviour
         }
     }
 
-    public void HandleButtonState(bool pressed, GameObject buttonObject)
+    public virtual void HandleButtonState(bool pressed, GameObject buttonObject)
     {
         if (buttonObject != bottomButton.gameObject)
         {

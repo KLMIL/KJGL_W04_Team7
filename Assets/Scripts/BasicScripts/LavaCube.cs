@@ -8,7 +8,7 @@ public class LavaCube : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("DisablePlayer"))
         {
             player = other.gameObject;
 
@@ -24,7 +24,7 @@ public class LavaCube : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("DisablePlayer"))
         {
             Rigidbody rb = other.GetComponent<Rigidbody>();
             if (rb != null)
@@ -40,7 +40,7 @@ public class LavaCube : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("DisablePlayer"))
         {
             Rigidbody rb = other.GetComponent<Rigidbody>();
             if (rb != null)
