@@ -9,62 +9,75 @@ public class BottomButton : MonoBehaviour
     private Vector3 pressedPosition;
     private bool isPressed = false;
     public float moveSpeed = 5f;
-    private float exitDelay = 0.1f; // 해제 지연 시간 (조정 가능)
-    private float lastExitTime; // 마지막으로 Exit가 호출된 시간
+    private float exitDelay = 0.1f; // 해제 지연 시간
+    private float lastExitTime;
+    private bool isWaitingForDebounce = false;
 
-    void Start()
+    [SerializeField] private GameObject triggerObject; // 자식 트리거 오브젝트 (인스펙터에서 설정)
+    private Rigidbody rb;
+
+    void Awake()
     {
         originalPosition = transform.position;
         pressedPosition = originalPosition + new Vector3(0, -0.1f, 0);
+        rb = GetComponent<Rigidbody>();
 
-        // 버튼에 Kinematic Rigidbody 추가
-        if (GetComponent<Rigidbody>() == null)
+        // 자식 트리거 오브젝트 확인
+        if (triggerObject == null)
         {
-            Rigidbody rb = gameObject.AddComponent<Rigidbody>();
-            rb.isKinematic = true;
-            Debug.Log($"{gameObject.name}: Kinematic Rigidbody 추가됨");
+            Debug.LogError($"{gameObject.name}: 자식 트리거 오브젝트가 설정되지 않았습니다. 인스펙터에서 연결하세요.");
         }
-
     }
 
-    void Update()
+    void FixedUpdate()
     {
+        if (rb == null)
+        {
+            Debug.LogError($"{gameObject.name}: Rigidbody가 null입니다!");
+            return; // rb가 null이면 여기서 멈춤
+        }
+
         if (isPressed)
         {
-            transform.position = Vector3.Lerp(transform.position, pressedPosition, Time.deltaTime * moveSpeed);
+            rb.MovePosition(Vector3.Lerp(transform.position, pressedPosition, moveSpeed * Time.fixedDeltaTime));
         }
         else
         {
-            transform.position = Vector3.Lerp(transform.position, originalPosition, Time.deltaTime * moveSpeed);
+            rb.MovePosition(Vector3.Lerp(transform.position, originalPosition, moveSpeed * Time.fixedDeltaTime));
         }
 
-        // Exit 후 일정 시간이 지나면 해제 상태 확정
-        if (!isPressed && Time.time - lastExitTime > exitDelay)
+        // 디바운스 처리
+        if (isWaitingForDebounce && Time.time - lastExitTime > exitDelay)
         {
-            //Debug.Log($"{gameObject.name}: 해제 상태 확정");
+            if (!isPressed)
+            {
+                Debug.Log($"{gameObject.name}: 해제 상태 확정");
+                onPressedStateChanged?.Invoke(false, this.gameObject);
+            }
+            isWaitingForDebounce = false;
         }
     }
 
-
-    private void OnCollisionStay(Collision collision)
+    // 자식 트리거에서 호출할 메서드 (이름 명확화)
+    public void HandleTriggerEnter(Collider other)
     {
-        if (!isPressed) // 상태가 변경될 때만 호출
+        if (!isPressed && other.CompareTag("Player"))
         {
             isPressed = true;
-            // 버튼 자신(this.gameObject)을 전달
+            isWaitingForDebounce = false;
             onPressedStateChanged?.Invoke(true, this.gameObject);
             Debug.Log("BottomButton이 눌렸습니다. Button: " + gameObject.name);
         }
     }
 
-    private void OnCollisionExit(Collision collision)
+    public void HandleTriggerExit(Collider other)
     {
-        if (isPressed) // 상태가 변경될 때만 호출
+        if (isPressed && other.CompareTag("Player") && !isWaitingForDebounce)
         {
             isPressed = false;
-            // 버튼 자신(this.gameObject)을 전달
-            onPressedStateChanged?.Invoke(false, this.gameObject);
-            Debug.Log("BottomButton이 해제되었습니다. Button: " + gameObject.name);
+            lastExitTime = Time.time;
+            isWaitingForDebounce = true;
+            Debug.Log("BottomButton이 잠시 해제됨. 디바운스 대기 시작: " + gameObject.name);
         }
     }
 
