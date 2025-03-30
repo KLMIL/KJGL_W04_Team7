@@ -6,6 +6,8 @@ public class StageLast : MonoBehaviour
     [SerializeField] private GameObject endBlock;
     [SerializeField] private GameObject endDoor;
     [SerializeField] private GameObject endBlock2;
+    public bool hasPlayer1Reached = false; // player1이 도달했는지
+    public bool hasPlayer2Reached = false; // player2가 도달했는지
     [SerializeField] private GameObject endDoor2;
      public GameObject player1; // 첫 번째 플레이어 (Inspector에서 설정)
      public GameObject player2;
@@ -40,6 +42,8 @@ public class StageLast : MonoBehaviour
             if (cubeController == null)
                 Debug.LogError("CubeArrayController가 설정되지 않았습니다.");
         }
+        player1 = GameObject.Find("Player1"); // "Player1"이라는 이름의 오브젝트
+        player2 = GameObject.Find("Player2"); // "Player2"라는 이름의 오브젝트
         if (buttons == null || buttons.Length != 16)
         {
             Debug.LogError("buttons는 9개여야 합니다!");
@@ -57,9 +61,14 @@ public class StageLast : MonoBehaviour
         int buttonIndex = System.Array.IndexOf(buttons, button);
         if (buttonIndex != -1 && buttonIndex < cubeIndicesToTurnOn.Length)
         {
-            if (buttonIndex == 0 || buttonIndex == 15)
-            { 
-                ResetAllCubes();
+            if (buttonIndex == 0)
+            {
+                ResetFirstPuzzleCubes();
+                Debug.Log("첫 번째 버튼이 눌려 모든 큐브가 꺼졌습니다.");
+            }
+            else if (buttonIndex == 15)
+            {
+                ResetLastPuzzleCubes();
                 Debug.Log("첫 번째 버튼이 눌려 모든 큐브가 꺼졌습니다.");
             }
             else
@@ -77,30 +86,35 @@ public class StageLast : MonoBehaviour
 
     private bool CheckGameEndCondition()
     {
-        // 0~23번 큐브 체크
+        // 각 퍼즐의 클리어 여부를 저장하는 변수
+        bool firstPuzzleCleared = true;
+        bool middlePuzzleCleared = true;
+        bool lastPuzzleCleared = true;
+
+        // 첫 번째 퍼즐: 0~23번 큐브 체크
         int[] requiredTrueCubes = new int[] { 0, 2, 3, 4, 5, 6, 7, 9, 14, 16, 17, 18, 19, 20, 21, 23 };
         for (int i = 0; i < 24; i++)
         {
             bool shouldBeTrue = System.Array.IndexOf(requiredTrueCubes, i) != -1;
             if (cubeController.cubes[i].isMaterial1 != shouldBeTrue)
             {
-                return false; // 조건 불만족
+                firstPuzzleCleared = false;
+                break;
             }
         }
 
-        // 24~26번 큐브 체크
+        // 중간 퍼즐: 24~26번 큐브 체크
         if (cubeController.cubes[24].specialMaterialState != 1 || // material3
             cubeController.cubes[25].specialMaterialState != 2 || // material4
             cubeController.cubes[26].specialMaterialState != 3)   // material5
         {
-            return false;
+            middlePuzzleCleared = false;
         }
 
-        // 27~51번 큐브 체크
+        // 마지막 퍼즐: 27~50번 큐브 체크
         int[] state1Cubes = new int[] { 29, 32, 33, 36 };
         int[] state3Cubes = new int[] { 34, 35, 37, 39, 41, 42, 45 };
         int[] state4Cubes = new int[] { 48, 49, 50 };
-
         for (int i = 27; i <= 50; i++)
         {
             int expectedState = 0; // 기본은 0
@@ -110,23 +124,91 @@ public class StageLast : MonoBehaviour
 
             if (cubeController.cubes[i].specialMaterialState != expectedState)
             {
-                return false;
+                lastPuzzleCleared = false;
+                break;
             }
         }
 
-        Debug.Log("모든 조건 만족했어! 게임 끝날 준비 됐어~");
-        return true;
+        // 첫 번째 퍼즐 클리어 시 버튼 0~5 비활성화
+        if (firstPuzzleCleared)
+        {
+            for (int i = 0; i <= 5; i++)
+            {
+                if (buttons[i] != null)
+                {
+                    buttons[i].SetActive(false); // 버튼 오브젝트 비활성화
+                }
+            }
+            Debug.Log("첫 번째 퍼즐 클리어! 버튼 0~5 비활성화");
+        }
+
+        // 중간 퍼즐 클리어 시 버튼 6~8 비활성화
+        if (middlePuzzleCleared)
+        {
+            for (int i = 6; i <= 8; i++)
+            {
+                if (buttons[i] != null)
+                {
+                    buttons[i].SetActive(false); // 버튼 오브젝트 비활성화
+                }
+            }
+            Debug.Log("중간 퍼즐 클리어! 버튼 6~8 비활성화");
+        }
+
+        // 마지막 퍼즐 클리어 시 버튼 9~15 비활성화
+        if (lastPuzzleCleared)
+        {
+            for (int i = 9; i <= 15; i++)
+            {
+                if (buttons[i] != null)
+                {
+                    buttons[i].SetActive(false); // 버튼 오브젝트 비활성화
+                }
+            }
+            Debug.Log("마지막 퍼즐 클리어! 버튼 9~15 비활성화");
+        }
+
+        // 모든 퍼즐이 클리어된 경우
+        if (firstPuzzleCleared && middlePuzzleCleared && lastPuzzleCleared)
+        {
+            // 전체 게임이 완료되었을 때 추가적으로 버튼 비활성화
+            // 예: 모든 버튼(0~15)을 비활성화
+            for (int i = 0; i <= 15; i++)
+            {
+                if (buttons[i] != null)
+                {
+                    buttons[i].SetActive(false); // 버튼 오브젝트 비활성화
+                }
+            }
+            Debug.Log("모든 퍼즐 클리어! 모든 버튼(0~15) 비활성화");
+
+            Debug.Log("모든 조건 만족했어! 게임 끝날 준비 됐어~");
+            return true;
+        }
+
+        return false;
     }
-    private void ResetAllCubes()
+    private void ResetFirstPuzzleCubes()
     {
-        cubeController.ResetAllToFalse();
+        cubeController.ResetFirstPuzzleToFalse();
     }
+    private void ResetLastPuzzleCubes()
+    {
+        cubeController.ResetLastPuzzleToFalse();
+    }
+
+
     public void Update()
     {
         if (CheckGameEndCondition())
         {
             gameComplete = true;
             PlayEndScene();
+        }
+        if (hasPlayer1Reached && hasPlayer2Reached)
+        {
+            UIManager.Instance.ShowSuccessScreen();
+            Time.timeScale = 0;
         }
     }
     private void PlayEndScene()

@@ -137,8 +137,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6166676a711b0140b1abccfcf8f1816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallButtonScript: {fileID: 0}
-  material: {fileID: 0}
 --- !u!1001 &3380617716135763317
 PrefabInstance:
   m_ObjectHideFlags: 0
