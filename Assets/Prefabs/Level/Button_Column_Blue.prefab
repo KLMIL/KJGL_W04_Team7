@@ -12,9 +12,13 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: f08858e719cf6004db7b40e7b37e2c4f, type: 2}
+    - target: {fileID: 3211376330999497915, guid: 0e5cb1a37dc043a4aa0d322dd7aafe2b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4088284282184602189, guid: 0e5cb1a37dc043a4aa0d322dd7aafe2b, type: 3}
       propertyPath: m_Name
-      value: Button_Column (2) Variant
+      value: Button_Column_Blue
       objectReference: {fileID: 0}
     - target: {fileID: 8156128565892833383, guid: 0e5cb1a37dc043a4aa0d322dd7aafe2b, type: 3}
       propertyPath: m_LocalPosition.x

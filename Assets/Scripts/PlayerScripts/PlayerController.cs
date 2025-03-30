@@ -263,8 +263,8 @@ public class PlayerController : MonoBehaviour
         cursorHint.enabled = false;
 
         //Debug.Log("Is it Called?2");
-        Debug.Log("Body Animator State: " + bodyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
-        Debug.Log("Chest Animator State: " + chestAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
+        //Debug.Log("Body Animator State: " + bodyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
+        //Debug.Log("Chest Animator State: " + chestAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
     }
 
     public void ActivePlayerUI()

@@ -23,7 +23,7 @@ public class StairBottom : MonoBehaviour
             rb = gameObject.AddComponent<Rigidbody>();
             rb.isKinematic = true; // Kinematic으로 설정
             rb.useGravity = false; // 중력 비활성화
-            Debug.Log($"{gameObject.name}: Kinematic Rigidbody 추가됨");
+            //Debug.Log($"{gameObject.name}: Kinematic Rigidbody 추가됨");
         }
 
         // 버튼 상태 구독
