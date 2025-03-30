@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
         ResetPassedFlags(); // 리스폰 시 플래그 초기화
     }
 
-    
+
 
     public void SetPlayer1Passed(bool value)
     {
