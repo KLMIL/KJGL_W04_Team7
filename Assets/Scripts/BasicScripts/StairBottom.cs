@@ -1,12 +1,11 @@
 using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 public class StairBottom : MonoBehaviour
 {
     private Vector3 originalPosition;
     private Vector3 targetPosition;
-    public BottomButton[] bottomButtons; // BottomButton 배열
+    [SerializeField] private BottomButton bottomButton; // 단일 BottomButton
     private Coroutine currentCoroutine;
     private Rigidbody rb;
 
@@ -28,38 +27,42 @@ public class StairBottom : MonoBehaviour
         }
 
         // 버튼 상태 구독
-        foreach (var button in bottomButtons)
+        if (bottomButton != null)
         {
-            if (button != null)
-            {
-                button.onPressedStateChanged += HandleButtonState;
-            }
+            bottomButton.onPressedStateChanged += HandleButtonState;
         }
-
-        if (bottomButtons == null || bottomButtons.Length == 0)
+        else
         {
-            Debug.LogError("BottomButton 배열이 비어 있습니다.");
+            Debug.LogError($"{gameObject.name}: BottomButton이 설정되지 않았습니다.");
         }
     }
 
     public void HandleButtonState(bool pressed, GameObject buttonObject)
     {
-        if (bottomButtons.Any(b => b != null && b.gameObject == buttonObject))
+        if (buttonObject != bottomButton.gameObject)
         {
-            // 버튼이 눌렸을 때 길을 올림
-            if (pressed && currentCoroutine == null)
+            return; // 다른 버튼의 입력은 무시
+        }
+
+        // 버튼이 눌렸을 때 길을 올림
+        if (pressed)
+        {
+            if (currentCoroutine != null)
             {
-                if (currentCoroutine != null) StopCoroutine(currentCoroutine);
-                currentCoroutine = StartCoroutine(MoveUp());
-                Debug.Log($"{gameObject.name}: 버튼 눌림 - 길 올라감 시작");
+                StopCoroutine(currentCoroutine);
             }
-            // 모든 버튼이 해제되었을 때 길을 내림
-            else if (!pressed && !bottomButtons.Any(b => b != null && b.IsPressed()))
+            currentCoroutine = StartCoroutine(MoveUp());
+            Debug.Log($"{gameObject.name}: 버튼 눌림 - 길 올라감 시작");
+        }
+        // 버튼이 해제되었을 때 길을 내림
+        else
+        {
+            if (currentCoroutine != null)
             {
-                if (currentCoroutine != null) StopCoroutine(currentCoroutine);
-                currentCoroutine = StartCoroutine(MoveDown());
-                Debug.Log($"{gameObject.name}: 모든 버튼 해제 - 길 내려감 시작");
+                StopCoroutine(currentCoroutine);
             }
+            currentCoroutine = StartCoroutine(MoveDown());
+            Debug.Log($"{gameObject.name}: 버튼 해제 - 길 내려감 시작");
         }
     }
 
@@ -73,14 +76,7 @@ public class StairBottom : MonoBehaviour
         rb.MovePosition(targetPosition);
         Debug.Log($"{gameObject.name}: 길이 목표 위치에 도달");
 
-        // 버튼이 눌려 있는 동안 유지
-        while (bottomButtons.Any(b => b != null && b.IsPressed()))
-        {
-            yield return null;
-        }
-
-        // 버튼이 모두 해제되면 내려감
-        currentCoroutine = StartCoroutine(MoveDown());
+        yield return null; // 필요 시 추가 대기 로직 삽입 가능
     }
 
     private IEnumerator MoveDown()
@@ -93,24 +89,5 @@ public class StairBottom : MonoBehaviour
         rb.MovePosition(originalPosition);
         Debug.Log($"{gameObject.name}: 길이 원래 위치로 복귀");
         currentCoroutine = null;
-    }
-
-    // 캐릭터를 플랫폼의 자식으로 설정해 떨림 방지
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player")) // 캐릭터 태그가 "Player"라고 가정
-        {
-            collision.transform.SetParent(transform);
-            Debug.Log($"{collision.gameObject.name}이 플랫폼의 자식으로 설정됨");
-        }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            collision.transform.SetParent(null);
-            Debug.Log($"{collision.gameObject.name}이 플랫폼에서 분리됨");
-        }
     }
 }

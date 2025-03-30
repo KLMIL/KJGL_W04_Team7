@@ -22,9 +22,6 @@ public class ClosingWall_1 : MonoBehaviour
         leftOriginalPos = leftWall.transform.position;  // LeftWall의 초기 위치
         rightOriginalPos = rightWall.transform.position; // RightWall의 초기 위치
 
-        // 자식 오브젝트 확인
-        Debug.Log($"LeftWall 자식 수: {leftWall.transform.childCount}");
-        Debug.Log($"RightWall 자식 수: {rightWall.transform.childCount}");
     }
 
     void Update()

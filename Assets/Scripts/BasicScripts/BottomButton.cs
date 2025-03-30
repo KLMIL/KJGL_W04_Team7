@@ -9,7 +9,7 @@ public class BottomButton : MonoBehaviour
     private Vector3 pressedPosition;
     private bool isPressed = false;
     public float moveSpeed = 5f;
-    private float exitDelay = 0.1f; // 해제 지연 시간
+    private float exitDelay = 0.3f; // 해제 지연 시간
     private float lastExitTime;
     private bool isWaitingForDebounce = false;
 
@@ -61,7 +61,7 @@ public class BottomButton : MonoBehaviour
     // 자식 트리거에서 호출할 메서드 (이름 명확화)
     public void HandleTriggerEnter(Collider other)
     {
-        if (!isPressed && other.CompareTag("Player"))
+        if (!isPressed)
         {
             isPressed = true;
             isWaitingForDebounce = false;
@@ -72,7 +72,7 @@ public class BottomButton : MonoBehaviour
 
     public void HandleTriggerExit(Collider other)
     {
-        if (isPressed && other.CompareTag("Player") && !isWaitingForDebounce)
+        if (isPressed && !isWaitingForDebounce)
         {
             isPressed = false;
             lastExitTime = Time.time;
@@ -81,8 +81,4 @@ public class BottomButton : MonoBehaviour
         }
     }
 
-    public bool IsPressed()
-    {
-        return isPressed;
-    }
 }

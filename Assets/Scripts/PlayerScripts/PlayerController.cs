@@ -241,7 +241,7 @@ public class PlayerController : MonoBehaviour
 
     public void DisablePlayer()
     {
-        Debug.Log("Is it Called?1");
+        //Debug.Log("Is it Called?1");
 
         // 애니메이션 강제로 Idle 설정
         bodyAnimator.Play("Idle", 0, 0f);
@@ -262,7 +262,7 @@ public class PlayerController : MonoBehaviour
         cursorDot.enabled = false;
         cursorHint.enabled = false;
 
-        Debug.Log("Is it Called?2");
+        //Debug.Log("Is it Called?2");
         Debug.Log("Body Animator State: " + bodyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
         Debug.Log("Chest Animator State: " + chestAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
     }

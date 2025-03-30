@@ -13,7 +13,7 @@ public class BottomButtonTrigger : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (parentButton != null)
         {

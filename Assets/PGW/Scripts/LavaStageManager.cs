@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class LavaStageManager : MonoBehaviour
 {
@@ -6,6 +7,8 @@ public class LavaStageManager : MonoBehaviour
     [SerializeField] private StairBottom[] paths;    // 길 4개
     [SerializeField] private WallButton wallButton;  // 추가: 벽 버튼
     [SerializeField] private GameObject[] doors;     // 추가: 문 2개
+
+    private Queue<(bool pressed, GameObject buttonObject, int index)> inputQueue = new Queue<(bool pressed, GameObject, int)>();
 
     void Start()
     {
@@ -40,7 +43,7 @@ public class LavaStageManager : MonoBehaviour
             return;
         }
 
-        // 기존 버튼과 길 연결
+        // 버튼과 길 연결
         ConnectButtonsToPaths();
     }
 
@@ -53,15 +56,30 @@ public class LavaStageManager : MonoBehaviour
                 int index = i; // 클로저 문제 방지
                 buttons[i].onPressedStateChanged += (pressed, buttonObject) =>
                 {
-                    paths[index].HandleButtonState(pressed, buttonObject);
-                    Debug.Log($"Button[{index}] 상태 변경: {pressed}, 연결된 Path[{index}] 동작");
+                    // 입력을 큐에 추가
+                    inputQueue.Enqueue((pressed, buttonObject, index));
+                    Debug.Log($"Button[{index}] 입력 감지: {pressed}, 큐에 추가됨");
                 };
             }
         }
     }
+
+    void FixedUpdate()
+    {
+        // 큐에 쌓인 입력을 순차적으로 처리
+        while (inputQueue.Count > 0)
+        {
+            var (pressed, buttonObject, index) = inputQueue.Dequeue();
+            if (paths[index] != null)
+            {
+                paths[index].HandleButtonState(pressed, buttonObject);
+                Debug.Log($"Button[{index}] 상태 변경: {pressed}, 연결된 Path[{index}] 동작");
+            }
+        }
+    }
+
     public void ButtonListen(GameObject button)
     {
-
         // WallButton 처리
         if (button == wallButton.gameObject)
         {
@@ -75,5 +93,4 @@ public class LavaStageManager : MonoBehaviour
             }
         }
     }
-
 }
