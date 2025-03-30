@@ -76357,7 +76357,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4839253028344231619}
   m_Layer: 0
-  m_Name: Stage_Ending
+  m_Name: Stage8_Ending
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -122,18 +122,18 @@ public class CubeArrayController : MonoBehaviour
 
             if (newMaterial == null)
             {
-                Debug.LogError($"인덱스 {cubeData.index}에 적용할 머터리얼이 null입니다! (state: {cubeData.specialMaterialState})");
+                //Debug.LogError($"인덱스 {cubeData.index}에 적용할 머터리얼이 null입니다! (state: {cubeData.specialMaterialState})");
             }
             else
             {
                 renderer.material = newMaterial;
-                Debug.Log($"인덱스 {cubeData.index}에 머터리얼 적용: {newMaterial.name}");
+                //Debug.Log($"인덱스 {cubeData.index}에 머터리얼 적용: {newMaterial.name}");
             }
         }
         else // 기본 큐브
         {
             renderer.material = cubeData.isMaterial1 ? material1 : material2;
-            Debug.Log($"인덱스 {cubeData.index}에 기본 머터리얼 적용: {(cubeData.isMaterial1 ? material1.name : material2.name)}");
+            //Debug.Log($"인덱스 {cubeData.index}에 기본 머터리얼 적용: {(cubeData.isMaterial1 ? material1.name : material2.name)}");
         }
     }
 
