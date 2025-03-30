@@ -12,6 +12,7 @@ TagManager:
   - WallButton
   - StageStartPoint
   - DisablePlayer
+  - RollingStone
   layers:
   - Default
   - TransparentFX

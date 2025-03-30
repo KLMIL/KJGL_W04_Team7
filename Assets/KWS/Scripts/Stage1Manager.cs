@@ -7,7 +7,12 @@ public class Stage1Manager : MonoBehaviour
     [SerializeField] private GameObject room2LockWall;
     [SerializeField] private GameObject downHatch;
     [SerializeField] private GameObject upHatch;
-    [SerializeField] private GameObject[] floors;
+    //[SerializeField] private GameObject[] floors;
+
+    [SerializeField] private Collider sphereKillPlayerPoint;
+    [SerializeField] private Collider sphereSurvivePlayerPoint;
+
+
 
     [SerializeField] private float sphereVelocity = 10f;
     //[SerializeField] private Transform savePoint; 
@@ -41,10 +46,10 @@ public class Stage1Manager : MonoBehaviour
         room1LockWall.SetActive(false);
         room2LockWall.SetActive(true);
         upHatch.SetActive(false);
-        foreach (GameObject floor in floors)
-        {
-            floor.SetActive(false);
-        }
+        //foreach (GameObject floor in floors)
+        //{
+        //    floor.SetActive(false);
+        //}
         rollingStone.SetActive(true);
         Invoke("AddVelocityToSphere", 3f);
         Debug.Log("Stage 1 Start");
@@ -78,5 +83,11 @@ public class Stage1Manager : MonoBehaviour
         }
 
         Debug.Log("Stage 1 Reset");
+    }
+
+    public void EndStage()
+    {
+        // 문 다 열고
+        downHatch.SetActive(true); // 나중에는 벽이 닫히는걸로
     }
 }
