@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MovingWall : MonoBehaviour
+public class Stage1_TranBridge : MonoBehaviour
 {
     public float moveDistance = 7f;      // 문이 열리는 거리
     public float moveSpeed = 1f;         // 열리는 속도
@@ -19,7 +19,7 @@ public class MovingWall : MonoBehaviour
         rightWall = transform.GetChild(1).gameObject;
         leftOriginalPos = leftWall.transform.position;  // LeftWall의 초기 위치 (닫힌 상태)
         rightOriginalPos = rightWall.transform.position; // RightWall의 초기 위치 (닫힌 상태)
-        
+
 
         Debug.Log($"leftwall: {leftWall.name}");
     }
@@ -33,12 +33,12 @@ public class MovingWall : MonoBehaviour
             // 문을 열리는 방향으로 이동
             leftWall.transform.position = Vector3.Lerp(
                 leftOriginalPos,
-                leftOriginalPos - Vector3.right * moveDistance,
+                leftOriginalPos - Vector3.forward * moveDistance,
                 openProgress
             );
             rightWall.transform.position = Vector3.Lerp(
                 rightOriginalPos,
-                rightOriginalPos + Vector3.right * moveDistance,
+                rightOriginalPos + Vector3.forward * moveDistance,
                 openProgress
             );
 
