@@ -1946,7 +1946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 096d6f866d43f1345a4b06d6d1c971bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bottomButton: {fileID: 0}
+  bottomButton: {fileID: 6588639708683635548}
   moveSpeed: 30
 --- !u!4 &6546139752798110127 stripped
 Transform:
@@ -4928,6 +4928,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 203c0eddcdea09f4fad88facb713565f, type: 3}
+--- !u!114 &6588639708683635548 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1798648982760020885, guid: 203c0eddcdea09f4fad88facb713565f, type: 3}
+  m_PrefabInstance: {fileID: 4871093042734977225}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6873702741754409446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50ca1058540e7b947ac9ea1773149634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6873702741754409446 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2089060452708262191, guid: 203c0eddcdea09f4fad88facb713565f, type: 3}
