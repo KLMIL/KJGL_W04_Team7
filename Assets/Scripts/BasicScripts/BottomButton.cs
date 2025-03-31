@@ -7,7 +7,7 @@ public class BottomButton : MonoBehaviour
 
     private Vector3 originalPosition;
     private Vector3 pressedPosition;
-    private bool isPressed = false;
+    public bool isPressed = false;
     public float moveSpeed = 5f;
     private float exitDelay = 0.3f; // 해제 지연 시간
     private float lastExitTime;

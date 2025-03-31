@@ -137,10 +137,22 @@ public class CubeArrayController : MonoBehaviour
         }
     }
 
-    public void ResetAllToFalse()
+    public void ResetFirstPuzzleToFalse()
     {
-        foreach (CubeData cubeData in cubes)
+        for (int i = 0; i <= 23; i++) // 0~23 + 24~26
         {
+            CubeData cubeData = cubes[i];
+            cubeData.isMaterial1 = false;
+            cubeData.specialMaterialState = 0;
+            UpdateCubeMaterial(cubeData);
+        }
+    }
+
+    public void ResetLastPuzzleToFalse()
+    {
+        for (int i = 27; i < cubes.Length; i++) // 24~26 + 27~50
+        {
+            CubeData cubeData = cubes[i];
             cubeData.isMaterial1 = false;
             cubeData.specialMaterialState = 0;
             UpdateCubeMaterial(cubeData);
