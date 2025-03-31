@@ -10,6 +10,7 @@ public class MovingWall : MonoBehaviour
     private Vector3 leftOriginalPos;
     private Vector3 rightOriginalPos;
     private bool isOpening = false;
+    private bool isClosing = false;
     private bool isOpened = false;       // 문이 열려있는지 상태를 추적
     private float openProgress = 0f;
 
@@ -50,6 +51,30 @@ public class MovingWall : MonoBehaviour
                 openProgress = 1f;
             }
         }
+        else if (isClosing)
+        {
+            openProgress -= Time.deltaTime * moveSpeed;
+
+            // 문을 닫히는 방향으로 이동
+            leftWall.transform.position = Vector3.Lerp(
+                leftOriginalPos,
+                leftOriginalPos - Vector3.right * moveDistance,
+                openProgress
+            );
+            rightWall.transform.position = Vector3.Lerp(
+                rightOriginalPos,
+                rightOriginalPos + Vector3.right * moveDistance,
+                openProgress
+            );
+
+            // 닫힘이 완료되면 정지
+            if (openProgress <= 0f)
+            {
+                isClosing = false;
+                isOpened = false;   // 문이 완전히 닫혔음을 표시
+                openProgress = 0f;
+            }
+        }
     }
 
     public void Activate()
@@ -65,11 +90,10 @@ public class MovingWall : MonoBehaviour
 
     public void DeActivate()
     {
-        if (isOpened)
+        // 문이 열려있고, 닫히는 중이 아닐 때만 작동
+        if (isOpened && !isClosing)
         {
-            leftWall.transform.position = leftOriginalPos;
-            rightWall.transform.position = rightOriginalPos;
-            isOpened = false;
+            isClosing = true;
         }
     }
 }
