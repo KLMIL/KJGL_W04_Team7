@@ -93,6 +93,7 @@ public class WordSManager : MonoBehaviour
         if (isRightWallTriggered && isLeftWallTriggered)
         {
             KillPlayer();
+            
         }
 
     }
@@ -103,10 +104,11 @@ public class WordSManager : MonoBehaviour
         foreach (GameObject door in doors)
         {
             door.SendMessage("Activate", SendMessageOptions.DontRequireReceiver);
+            isClosing = false;
         }
     }
 
-    public void wallClosing()
+    void wallClosing()
     {
         Vector3 wallLeft = wall.transform.GetChild(0).position;
         Vector3 wallRight = wall.transform.GetChild(1).position;
@@ -114,9 +116,6 @@ public class WordSManager : MonoBehaviour
         Vector3 wallCenter = wall.transform.position;
 
         isClosing = true;  // 이동 시작 플래그
-
-
-
     }
 
 
