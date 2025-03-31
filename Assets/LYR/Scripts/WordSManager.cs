@@ -6,14 +6,33 @@ public class WordSManager : MonoBehaviour
     public GameObject[] doors;
     public GameObject wall;
 
+    private bool _isClosing = false; // private으로 유지
 
-    // 이동이 완료되었는지 체크하는 변수
-    [SerializeField]
-    private bool isClosing = false;
+    // 프로퍼티로 외부 접근 허용
+    public bool isClosing
+    {
+        get { return _isClosing; }
+        set { _isClosing = value; }
+    }
+
+
     private float speed = 1f;
 
 
     private GameObject player;
+    [SerializeField] private float damageDelay = 0.5f;
+
+    [SerializeField]
+    private bool isRightWallTriggered = false; // movingWallRight의 트리거 상태
+    [SerializeField]
+    private bool isLeftWallTriggered = false;  // movingWallLeft의 트리거 상태
+
+
+    void Start()
+    {
+        player = FindAnyObjectByType<PlayerController>().gameObject;
+        isClosing = false;
+    }
 
     void Update()
     {
@@ -27,8 +46,8 @@ public class WordSManager : MonoBehaviour
             Vector3 wallCenter = wall.transform.position;
 
             // 목표 위치 설정 (센터에서 오프셋 적용)
-            Vector3 targetLeft = wallCenter + new Vector3(4f, 0f, 0f);  // left는 +4
-            Vector3 targetRight = wallCenter + new Vector3(-4f, 0f, 0f); // right는 -4
+            Vector3 targetLeft = wallCenter + new Vector3(4.4f, 0f, 0f);  // left는 +4
+            Vector3 targetRight = wallCenter + new Vector3(-4.4f, 0f, 0f); // right는 -4
 
             // 현재 위치에서 목표 위치까지의 거리 계산
             float distanceLeft = Vector3.Distance(wallLeft.position, targetLeft);
@@ -70,6 +89,12 @@ public class WordSManager : MonoBehaviour
                 wallRight.position = targetRight;
             }
         }
+
+        if (isRightWallTriggered && isLeftWallTriggered)
+        {
+            KillPlayer();
+        }
+
     }
 
 
@@ -93,6 +118,35 @@ public class WordSManager : MonoBehaviour
 
 
     }
+
+
+
+    // WallTrigger에서 호출되는 메서드
+    public void OnWallTriggerEnter(string wallName)
+    {
+        if (wallName == "movingWallRight")
+        {
+            isRightWallTriggered = true;
+        }
+        else if (wallName == "movingWallLeft")
+        {
+            isLeftWallTriggered = true;
+        }
+    }
+
+    public void OnWallTriggerExit(string wallName)
+    {
+        if (wallName == "movingWallRight")
+        {
+            isRightWallTriggered = false;
+        }
+        else if (wallName == "movingWallLeft")
+        {
+            isLeftWallTriggered = false;
+        }
+    }
+
+
 
 
     void KillPlayer()
