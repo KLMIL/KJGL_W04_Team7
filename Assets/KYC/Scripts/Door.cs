@@ -8,7 +8,7 @@ public class Door : MonoBehaviour
 
     void Start()
     {
-        spawnPointExtra = new Vector3(0f, 0f, 0f);
+        spawnPointExtra = new Vector3(0f, 0f, 1f);
     }
 
     private void OnTriggerEnter(Collider other)

@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/NewMainScene_KYC.unity
-    guid: 988ffca62e1917e48b1334fcae3c93b8
+    path: Assets/Scenes/NewMainScene.unity
+    guid: d629041eb1fc6ff4587bf7b01d2efa0a
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

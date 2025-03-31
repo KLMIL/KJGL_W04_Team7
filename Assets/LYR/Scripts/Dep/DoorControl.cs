@@ -7,7 +7,7 @@ public class DoorControl : MonoBehaviour
     public float openSpeed = 2f;         // 열리는 속도
     public float closeSpeed = 1f;        // 닫히는 속도
     public bool autoClose = false;       // 자동 닫힘 여부
-    public float openDuration = 2f;      // 열린 상태 유지 시간 (autoClose가 true일 때만 적용)
+    public float openDuration = 0f;      // 열린 상태 유지 시간 (autoClose가 true일 때만 적용)
 
     // 내부 변수
     private Quaternion originalRotation;
@@ -69,5 +69,11 @@ public class DoorControl : MonoBehaviour
             isOpening = true;
             targetRotation = originalRotation * Quaternion.Euler(0, targetAngle, 0);
         }
+    }
+
+    public void CloseDoor()
+    {
+        isOpening = false;
+        isClosing = true;
     }
 }
