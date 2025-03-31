@@ -291,15 +291,12 @@ public class PlayerController : MonoBehaviour
 
     public void HandleAlive()
     {
-        if (this == activePlayer)
-        {
-            isDead = false;
-            bodyAnimator.SetTrigger("Alive");
-            chestAnimator.SetTrigger("Alive");
-            bodyAnimator.Play("Idle", 0, 0f); // 즉시 Idle로 전환
-            chestAnimator.Play("Idle", 0, 0f);
-            chestRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
-        }
+        isDead = false;
+        bodyAnimator.SetTrigger("Alive");
+        chestAnimator.SetTrigger("Alive");
+        bodyAnimator.Play("Idle", 0, 0f); // 즉시 Idle로 전환
+        chestAnimator.Play("Idle", 0, 0f);
+        chestRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
     }
 
     private void HandleJump()
