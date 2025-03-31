@@ -178,6 +178,8 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.gameOverScreen.SetActive(false);
         player1.transform.position = player1SpawnPoint; // 영구 스폰 포인트로 이동
         player2.transform.position = player2SpawnPoint; // 영구 스폰 포인트로 이동
+        player1.transform.rotation = Quaternion.identity; // 회전값 초기화
+        player2.transform.rotation = Quaternion.identity; // 회전값 초기화
         isPlayer1Dead = false;
         isPlayer2Dead = false;
         player1.GetComponent<PlayerController>().HandleAlive();

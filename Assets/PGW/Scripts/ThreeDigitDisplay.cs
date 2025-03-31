@@ -7,12 +7,8 @@ public class ThreeDigitDisplay : MonoBehaviour
     [SerializeField] private SevenSegmentDisplay displayTens;     // 10의 자리
     [SerializeField] private SevenSegmentDisplay displayUnits;    // 1의 자리
 
-    [SerializeField] private Renderer uObject;  // U 오브젝트
-    [SerializeField] private Renderer pObject;  // P 오브젝트
-    [SerializeField] private Renderer dObject;  // D 오브젝트
-    [SerializeField] private Renderer oObject;  // O 오브젝트
-    [SerializeField] private Renderer wObject;  // W 오브젝트
-    [SerializeField] private Renderer nObject;  // N 오브젝트
+    [SerializeField] private Renderer[] upObjects;    // U, P 오브젝트 배열
+    [SerializeField] private Renderer[] downObjects;  // D, O, W, N 오브젝트 배열
 
     [SerializeField] private Material upOnMaterial;   // UP 상태 켜짐 매터리얼
     [SerializeField] private Material downOnMaterial; // DOWN 상태 켜짐 매터리얼
@@ -30,15 +26,33 @@ public class ThreeDigitDisplay : MonoBehaviour
             Debug.LogError("ThreeDigitDisplay: 하나 이상의 SevenSegmentDisplay가 설정되지 않았습니다.");
             return;
         }
-        if (uObject == null || pObject == null || dObject == null || oObject == null || wObject == null || nObject == null)
+        if (upObjects == null ||   upObjects.Length != 2 || downObjects == null || downObjects.Length != 4)
         {
-            Debug.LogError("ThreeDigitDisplay: 하나 이상의 문자 오브젝트가 설정되지 않았습니다.");
+            Debug.LogError("ThreeDigitDisplay: upObjects는 2개(U,P), downObjects는 4개(D,O,W,N) 요소가 필요합니다.");
             return;
         }
         if (upOnMaterial == null || downOnMaterial == null || offMaterial == null)
         {
             Debug.LogError("ThreeDigitDisplay: UpOnMaterial, DownOnMaterial, 또는 OffMaterial이 설정되지 않았습니다.");
             return;
+        }
+
+        // 배열 내 null 체크
+        foreach (var obj in upObjects)
+        {
+            if (obj == null)
+            {
+                Debug.LogError("ThreeDigitDisplay: upObjects 배열에 null 요소가 있습니다.");
+                return;
+            }
+        }
+        foreach (var obj in downObjects)
+        {
+            if (obj == null)
+            {
+                Debug.LogError("ThreeDigitDisplay: downObjects 배열에 null 요소가 있습니다.");
+                return;
+            }
         }
 
         // 초기 비교 수행
@@ -86,19 +100,19 @@ public class ThreeDigitDisplay : MonoBehaviour
 
         if (totalNumber < TARGET_NUMBER)
         {
-            Debug.Log($"Number {totalNumber} is Above or Equal to {TARGET_NUMBER}");
+            Debug.Log($"Number {totalNumber} is Below {TARGET_NUMBER}");
             SetAboveObjects(true);  // U, P 켜기 (upOnMaterial)
             SetBelowObjects(false); // D, O, W, N 끄기
         }
-        else if(totalNumber > TARGET_NUMBER)
+        else if (totalNumber > TARGET_NUMBER)
         {
-            Debug.Log($"Number {totalNumber} is Below {TARGET_NUMBER}");
+            Debug.Log($"Number {totalNumber} is Above {TARGET_NUMBER}");
             SetAboveObjects(false); // U, P 끄기
             SetBelowObjects(true);  // D, O, W, N 켜기 (downOnMaterial)
         }
         else
         {
-            SetAboveObjects(true); // U, P 끄기
+            SetAboveObjects(true);  // U, P 켜기
             SetBelowObjects(true);  // D, O, W, N 켜기 (downOnMaterial)
             foreach (var door in doors)
             {
@@ -119,18 +133,20 @@ public class ThreeDigitDisplay : MonoBehaviour
     private void SetAboveObjects(bool isOn)
     {
         Material targetMaterial = isOn ? upOnMaterial : offMaterial;
-        uObject.material = targetMaterial;
-        pObject.material = targetMaterial;
+        foreach (var obj in upObjects)
+        {
+            obj.material = targetMaterial;
+        }
     }
 
     // D, O, W, N 오브젝트 상태 설정
     private void SetBelowObjects(bool isOn)
     {
         Material targetMaterial = isOn ? downOnMaterial : offMaterial;
-        dObject.material = targetMaterial;
-        oObject.material = targetMaterial;
-        wObject.material = targetMaterial;
-        nObject.material = targetMaterial;
+        foreach (var obj in downObjects)
+        {
+            obj.material = targetMaterial;
+        }
     }
 
     // 테스트용
