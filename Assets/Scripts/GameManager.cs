@@ -78,11 +78,11 @@ public class GameManager : MonoBehaviour
 
         if (player1.GetComponent<Transform>().position.y < -10f)
         {
-            SetPlayer1Dead(true);
+            SetPlayerDead(true);
         }
         if (player2.GetComponent<Transform>().position.y < -10f)
         {
-            SetPlayer2Dead(true);
+            SetPlayerDead(true);
         }
         if (isPlayer1Dead || isPlayer2Dead)
         {
