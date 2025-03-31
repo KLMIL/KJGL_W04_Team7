@@ -15,6 +15,8 @@ public class Stage1Manager : MonoBehaviour
     [SerializeField] private DoorControl stage1Door;
     [SerializeField] private DoorControl stage2Door;
 
+    [SerializeField] private Stage1_TranBridge clearBridge;
+
 
 
     [SerializeField] private float sphereVelocity = 10f;
@@ -91,8 +93,9 @@ public class Stage1Manager : MonoBehaviour
     public void EndStage()
     {
         // 문 다 열고
-        downHatch.SetActive(true); // 나중에는 벽이 닫히는걸로
+        //downHatch.SetActive(true); // 나중에는 벽이 닫히는걸로
         stage1Door.Activate();
         stage2Door.Activate();
+        clearBridge.Activate();
     }
 }
