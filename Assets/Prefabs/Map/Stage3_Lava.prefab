@@ -49,8 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 096d6f866d43f1345a4b06d6d1c971bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bottomButtons:
-  - {fileID: 7404941817803488467}
+  bottomButton: {fileID: 7404941817803488467}
   moveSpeed: 30
 --- !u!1 &593949118656372121
 GameObject:
@@ -456,8 +455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 096d6f866d43f1345a4b06d6d1c971bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bottomButtons:
-  - {fileID: 1612691904400540432}
+  bottomButton: {fileID: 1612691904400540432}
   moveSpeed: 30
 --- !u!1 &6263085952248070554
 GameObject:
@@ -625,8 +623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 096d6f866d43f1345a4b06d6d1c971bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bottomButtons:
-  - {fileID: 3105300575757146555}
+  bottomButton: {fileID: 3105300575757146555}
   moveSpeed: 30
 --- !u!1 &6752757393542123002
 GameObject:
@@ -779,8 +776,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 096d6f866d43f1345a4b06d6d1c971bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bottomButtons:
-  - {fileID: 1349112630418811877}
+  bottomButton: {fileID: 1349112630418811877}
   moveSpeed: 30
 --- !u!1 &8003464692067840959
 GameObject:
